@@ -11,6 +11,8 @@ body {
     margin: 0;
 }
 
+/******************* NAV BAR ********************/
+
 nav, nav * {
     /* border: solid 1px black; */
     display: flex;
@@ -21,12 +23,59 @@ nav ul {
     display: flex;
     list-style-type: none;
     padding: 0px;
+    text-decoration: none;
 }
 
 li {
     margin: 10px;
 
 }
-nav h1 {
-    margin-left: 10px;
+/* nav h1 {
+    margin-left: 20px;
+} */
+
+nav {
+    margin-left: 20px;
+    margin-right: 10px;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+.log-in {
+    color: #4D80AB;
+
+}
+
+
+/******************** BODY OF THE APP ********************/
+
+.app-body {
+    /* display: flex; */
+    display: grid;
+    grid-template-columns: 4fr 2fr;
+
+}
+
+.app-body-main {
+    border: 2px solid pink;
+
+}
+
+.recommendations-profile {
+    border: 2px solid pink;
+    display: flex;
+    padding: 5px;
+}
+.recommendations-profile img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    /* margin: auto; adds margins to the left and right */
+    align-self: center;
+}
+
+.recommendations-profile h1 {
+    padding: 5px;
 }
