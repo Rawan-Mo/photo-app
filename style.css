@@ -62,7 +62,9 @@ a {
     border: 2px solid pink;
 
 }
-
+.recommendations {
+    padding: 10px;
+}
 .recommendations-profile {
     border: 2px solid pink;
     display: flex;
@@ -78,4 +80,25 @@ a {
 
 .recommendations-profile h1 {
     padding: 5px;
+}
+
+.recommendations-body-suggestions h3 {
+    color: #999999;
+
+}
+
+.recommendations-suggestions-user {
+    display: flex;
+}
+
+.recommendations-suggestions-user img {
+    width: 30px;
+    height: 30px;
+    align-self: center;
+
+}
+
+.recommendations-suggestions-user h4, .recommendations-suggestions-user p {
+    margin: 0;
+
 }
