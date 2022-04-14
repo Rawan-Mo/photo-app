@@ -30,13 +30,16 @@ li {
     margin: 10px;
 
 }
-/* nav h1 {
+nav h1 {
     margin-left: 20px;
-} */
+}
 
 nav {
-    margin-left: 20px;
-    margin-right: 10px;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: white;
 }
 
 a {
@@ -52,21 +55,22 @@ a {
 /******************** BODY OF THE APP ********************/
 
 .app-body {
-    /* display: flex; */
-    display: grid;
-    grid-template-columns: 4fr 2fr;
+    display: flex;
     background-color: #F2F2F2;
-
+    flex-direction: wrap;
+    padding-top: 6%;
 }
 
 .app-body-main {
     border: 2px solid pink;
-
+    /*position: absolute;
+    bottom: 50px;*/
 }
 .recommendations {
     padding: 10px;
     /* background-color: #F2F2F2; */
 }
+
 .recommendations-profile {
     border: 2px solid pink;
     display: flex;
@@ -125,8 +129,11 @@ a {
     width: 300px;
 }
 
+/* Stories + Card div */
 
-
+.app-body-main{
+    margin: auto;
+}
 
 .stories-div {
     display: flex;
@@ -165,7 +172,12 @@ a {
 /* CARD */
 .card {
     width: 600px;
+    /*overflow-x: hidden;
+    overflow-y: auto;*/
+    background-color: white;
+    margin: 4% 0;
 }
+
 .card-header {
     display: flex;
     justify-content: space-between;
@@ -198,7 +210,7 @@ a {
 .card-comment-posting {
     display: flex;
     align-items: center;
-    display: grid;
+    display: flex;
     grid-template-columns: 4fr 2.5fr;
 }
 
