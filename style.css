@@ -1,220 +1,311 @@
 html {
     scroll-behavior: smooth;
-}
-
-body * {
+  }
+  
+  body * {
     box-sizing: border-box;
-}
-
-body {
+  }
+  
+  body {
     font-family: Arial, Helvetica, sans-serif;
     margin: 0;
-}
-
-/******************* NAV BAR ********************/
-
-nav, nav * {
+  }
+  
+  /******************* NAV BAR ********************/
+  
+  nav,
+  nav * {
     /* border: solid 1px black; */
     display: flex;
     justify-content: space-between;
-}
-
-nav ul {
+  }
+  
+  nav ul {
     display: flex;
     list-style-type: none;
     padding: 0px;
     text-decoration: none;
-}
-
-li {
+  }
+  
+  li {
     margin: 10px;
-
-}
-nav h1 {
+  }
+  nav h1 {
     margin-left: 20px;
-}
-
-nav {
+  }
+  
+  nav {
     overflow: hidden;
-    position: fixed;
+    position: sticky;
     top: 0;
     width: 100%;
     background-color: white;
-}
-
-a {
+  }
+  
+  a {
     text-decoration: none;
     color: black;
-}
-.log-in {
-    color: #4D80AB;
-
-}
-
-
-/******************** BODY OF THE APP ********************/
-
-.app-body {
+  }
+  .log-in {
+    color: #4d80ab;
+  }
+  
+  /******************** BODY OF THE APP ********************/
+  
+  .app-body {
     display: flex;
-    background-color: #F2F2F2;
+    background-color: #f2f2f2;
     flex-direction: wrap;
-    padding-top: 6%;
-}
-
-.app-body-main {
-    border: 2px solid pink;
+    padding-top: 2%;
+  }
+  
+  .app-body-main {
+    /* border: 2px solid pink; */
+    margin-left: 8%;
+    width: 60%;
     /*position: absolute;
     bottom: 50px;*/
-}
-.recommendations {
+  }
+  .recommendations {
     padding: 10px;
-    /* background-color: #F2F2F2; */
-}
-
-.recommendations-profile {
-    border: 2px solid pink;
+    /* position: fixed; */
+    right: 20px;
+    overflow: hidden;
+    margin: 0 10px;
+  }
+  .recommendations-div {
+    overflow: auto;
+  }
+  
+  .recommendations-profile {
+    /* border: 2px solid pink; */
     display: flex;
     padding: 5px;
-}
-.recommendations-profile img {
+  }
+  .recommendations-profile img {
     width: 60px;
     height: 60px;
     border-radius: 50%;
     /* margin: auto; adds margins to the left and right */
     align-self: center;
-}
-
-.recommendations-profile h1 {
+  }
+  
+  .recommendations-profile h1 {
     padding: 5px;
-}
-
-.recommendations-body-suggestions h3 {
-    color: #999999;
-
-}
-
-.recommendations-suggestions-user {
+  }
+  
+  .recommendations-body-suggestions p {
+    color: #767676;
+    font-weight: bold;
+    font-size: 18px;
+    margin-left: 5px;
+  }
+  
+  .recommendations-suggestions-user {
     display: flex;
     justify-content: space-around;
     margin-bottom: 15px;
-}
-
-.recommendations-suggestions-user img {
+  }
+  
+  .recommendations-suggestions-user img {
     width: 40px;
     height: 40px;
     align-self: center;
     border-radius: 50%;
-
-}
-
-.recommendations-suggestions-user h4, .recommendations-suggestions-user p {
+  }
+  
+  .recommendations-suggestions-user h4,
+  .recommendations-suggestions-user p {
     margin: 0;
-}
-
-
-.suggested-user-div p {
-    color: #999999;
+  }
+  
+  .suggested-user-div p {
+    color: #767676;
     font-size: 15px;
-}
-
-.suggested-user-follow {
-    color: #2C699B;
-
-}
-
-.recommendations-div {
-    justify-content: left;
-    border: 2px solid blue;
+  }
+  
+  .suggested-user-follow {
+    color: #2c699b;
+  }
+  
+  .recommendations-div {
+    justify-content: right;
+    /* border: 2px solid blue; */
     /* width: 70%; */
     width: 300px;
-}
-
-/* Stories + Card div */
-
-.app-body-main{
-    margin: auto;
-}
-
-.stories-div {
+  }
+  
+  @media only screen and (max-width: 700px) {
+    /* For mobile phones: */
+    .recommendations {
+      display: none;
+    }
+  
+    .app-body-main {
+      width: 100%;
+      /* margin-left: 0%; */
+      margin: auto;
+      margin: 0px 2.5%;
+    }
+    .stories-div {
+      /* position: fixed; */
+    }
+  }
+  
+  /* Stories + Card div */
+  
+  .stories-div {
     display: flex;
-    background-color: white
-}
-
-
-
-.stories-div img {
+    background-color: white;
+  }
+  
+  .stories-div img {
     width: 60px;
     height: 60px;
     border-radius: 50%;
     /* margin: auto; adds margins to the left and right */
     align-self: center;
-}
-
-.stories-div p {
+  }
+  
+  .stories-div p {
     font-size: 12px;
-    color: #999999;
-    ;
-}
-
-.story-div {
+    color: #767676;
+  }
+  
+  .story-div {
     padding: 10px;
-    /* justify-content: left; */
-}
-.story-div p {
+    justify-content: left;
+  }
+  .story-div p {
     margin: auto;
     text-align: center;
-}
-
-
-
-
-
-/* CARD */
-.card {
-    width: 600px;
-    /*overflow-x: hidden;
-    overflow-y: auto;*/
+  }
+  
+  /* CARD */
+  .card {
+    /* width: 600px; */
+    overflow-x: hidden;
+    overflow-y: auto;
     background-color: white;
     margin: 4% 0;
-}
-
-.card-header {
+    /* border: 2px solid turquoise; */
+    padding-bottom: 20px;
+    /* margin-top: 50px; */
+  }
+  .card img {
+    width: 100%;
+  }
+  
+  .card-header {
     display: flex;
     justify-content: space-between;
     align-self: center;
     padding: 0px 10px;
-}
-
-.card-header i{
+  }
+  
+  .card-header i {
     align-self: center;
-}
-
-
-.card-reactions {
+  }
+  
+  .card-details-prepost {
+    margin: 8px 15px;
+  }
+  
+  .card-reactions {
     display: flex;
     justify-content: space-between;
-    
-    
-}
-
-.card-caption, .card-comment {
+  }
+  
+  .far {
+    padding: 0px 2px;
+    font-size: 22px;
+  }
+  
+  .card-caption,
+  .card-comment {
     display: flex;
-    
-}
-.card-caption p, .card-comment p {
+    /* padding: 0px 0px; */
+    /* margin: 0px; */
+  }
+  .card-comments h4,
+  .card-comments p,
+  .card-comments strong {
+    margin: 6px 0px;
+  }
+  
+  .card-caption p,
+  .card-comment p {
     align-self: center;
     padding-left: 8px;
-}
-
-
-.card-comment-posting {
+  }
+  
+  .card-comment-posting {
     display: flex;
     align-items: center;
     display: flex;
-    grid-template-columns: 4fr 2.5fr;
-}
-
-.adding-comment {
+    justify-content: space-between;
+    margin-top: 0px;
+    padding-top: 0px;
+    border-top: 1px solid #dbdbdb;
+    /* margin: 8px 15px; */
+    padding: 0px 14px;
+    padding-top: 10px;
+    /* padding: 0px; */
+    /* grid-template-columns: 4fr 2.5fr; */
+  }
+  
+  .card-comment-posting p {
+    margin: 0px;
+    margin-top: 5px;
+  }
+  
+  .adding-comment {
     display: flex;
     align-items: center;
-}
+  
+    /* justify-content: space-around; */
+  }
+  
+  .adding-comment p {
+    padding-left: 5px;
+    margin: 0px;
+  }
+  
+  .card-date {
+    font-size: 14px;
+    margin: 0px;
+    padding: 0px;
+  }
+  
+  .card-date p {
+    margin: 5px 0px;
+    /* padding: 5px 0px; */
+  }
+  
+  .bold {
+    font-weight: bold;
+  }
+  
+  .blue {
+    color: #007eb2;
+  }
+  
+  .gray {
+    color: #767676;
+  }
+  
+  .comfortaa {
+    font-family: "Comfortaa", cursive;
+    font-weight: 700;
+  }
+  
+  button {
+    border: none;
+    background: none;
+    font-size: inherit;
+  }
+  
+  .username {
+    font-weight: strong;
+    font-style: strong;
+  }
