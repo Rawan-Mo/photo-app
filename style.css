@@ -68,7 +68,7 @@ html {
   }
   .recommendations {
     padding: 10px;
-    /* position: fixed; */
+    position: fixed;
     right: 20px;
     overflow: hidden;
     margin: 0 10px;
