@@ -120,13 +120,11 @@ html {
   }
   
   .suggested-user-div p {
-    color: #767676;
+    /* color: #767676; */
     font-size: 15px;
   }
   
-  .suggested-user-follow {
-    color: #2c699b;
-  }
+ 
   
   .recommendations-div {
     justify-content: right;
@@ -221,12 +219,17 @@ html {
     font-size: 22px;
   }
   
-  .card-caption,
+  /* .card-caption,
   .card-comment {
-    display: flex;
+    /* display: flex; */
     /* padding: 0px 0px; */
     /* margin: 0px; */
-  }
+  
+  .card-caption-more button {
+    padding-top: 0px;
+    margin-top: 0px;
+
+    }
   .card-comments h4,
   .card-comments p,
   .card-comments strong {
@@ -287,11 +290,13 @@ html {
   }
   
   .blue {
-    color: #007eb2;
+    color: #0F658A;
   }
   
   .gray {
     color: #767676;
+    color: #616161;
+    color: #595959;
   }
   
   .comfortaa {
