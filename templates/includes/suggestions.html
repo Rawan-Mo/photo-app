@@ -1,0 +1,27 @@
+<div class="recommendations-div">
+    <div class="recommendations-profile">
+        <img src={{ user.get('image_url') }} alt="profile pic" />
+        <h1 class="comfortaa">{{ user.get('username') }}</h1>
+    </div>
+    <div class="recommendations-body-suggestions">
+        <p>Suggestions for you</p>
+    </div>
+
+
+    {% for suggestion in suggestions %}
+
+    <div class="recommendations-suggestions-user">
+        <div class="suggested-user-img">
+            <img src={{ suggestion.get('profile_url') }}alt="amanda profile pic" />
+        </div>
+        <div class="suggested-user-div">
+            <h4>{{ suggestion.get('username') }}</h4>
+            <p>suggested for you</p>
+        </div>
+        <div class="suggested-user-follow">
+            <button class="blue">follow</button>
+        </div>
+    </div>
+    {% endfor %}
+
+</div>
