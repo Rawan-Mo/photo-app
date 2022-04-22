@@ -1,6 +1,6 @@
 {% for story in stories %}
     <div class="story-div">
-      <img src={{ story.get('user').get('profile_url') }} alt="story pic" />
+      <img src="{{ story.get('user').get('profile_url') }}" alt="story from {{story.get('user').get('username') }}" />
       <p>{{ story.get('user').get('username') }}</p>
     </div>
 {% endfor %}
