@@ -244,6 +244,9 @@ html {
     padding-left: 8px;
   }
   
+  .card-caption span {
+    text-overflow: ellipsis;
+  }
   .card-comment-posting {
     display: flex;
     align-items: center;
@@ -315,4 +318,9 @@ html {
   .username {
     font-weight: strong;
     font-style: strong;
+  }
+
+
+  .view-all {
+    padding-left: 8px;
   }

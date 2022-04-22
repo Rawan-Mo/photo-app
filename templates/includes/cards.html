@@ -25,21 +25,29 @@
             <div class="card-comments">
                 <div class="card-caption">
                     <strong>gibsonjack</strong>
-                    <span>{{post.get('title')}}</span>
+                    <span>{{post.get('title')}}..</span>
                     <button class="card-caption-more blue">more</button>
                 </div>
-           
+
+
+                <!-- # if greater than 1 -> view all comments
+                # greater than 0 -> first comment -->
+                {% if post.comments|length > 1 %}
+                <p class="view-all blue">View all {{post.comments|length}} comments</p>
+                {% endif %}
+                {% if post.comments|length > 0 %}
+                <div class="card-comment">
+                    <strong>{{post.comments[0].get('user').get('username')}}</strong>
+                    <span>{{post.comments[0].get('text')}}</span>
+                </div>
+                {% endif %}
+                
+                        
+
 
                 
                 
-                <div class="card-comment">
-                    <strong>lizzie</strong>
-                    <span>OMG this is such a cool photo!</span>
-                </div>
-                <div class="card-comment">
-                    <strong>vanek97</strong>
-                    <p>Wow mad photo skillz dude</p>
-                </div>
+
             </div>
             <div class="card-date gray">
                 <p>{{post.get('display_time')}}</p>
