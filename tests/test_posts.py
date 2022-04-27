@@ -4,6 +4,7 @@ import requests
 root_url = utils.root_url
 import unittest
 
+# this test is for GET (list of posts), POST (create a new post)
 class TestPostListEndpoint(unittest.TestCase):
     
     def setUp(self):
@@ -13,7 +14,7 @@ class TestPostListEndpoint(unittest.TestCase):
     def test_posts_get_defaults_to_20(self):
         response = requests.get(root_url + '/api/posts')
         data = response.json()
-        self.assertLessEqual(len(data), 20)
+        self.assertEqual(len(data), 20)
         self.assertEqual(response.status_code, 200)
 
     def test_posts_get_has_required_data(self):
@@ -37,6 +38,8 @@ class TestPostListEndpoint(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_posts_get_bad_limit_argument_handled(self):
+        # this test checks that the limit querystring parameter
+        # is <= 50 and that it is an integer
         response = requests.get(root_url + '/api/posts?limit=80')
         self.assertEqual(response.status_code, 400)
 
@@ -115,6 +118,7 @@ class TestPostListEndpoint(unittest.TestCase):
         self.assertEqual(response.status_code, 400)
     
 
+# GET (single post), PATCH (update post), DELETE (delete post)
 class TestPostDetailEndpoint(unittest.TestCase):
     
     def setUp(self):
@@ -274,7 +278,7 @@ if __name__ == '__main__':
         TestPostListEndpoint('test_post_post_image_only'),                  # post (create)
         TestPostListEndpoint('test_post_post_bad_data_400_error'),          # post (create)
 
-        # # Detail Endpoint Tests
+        # # # Detail Endpoint Tests
         TestPostDetailEndpoint('test_post_patch_correct_data_200'),                          # patch (update)
         TestPostDetailEndpoint('test_post_patch_blanks_not_overwritten'),   # patch (update)
         TestPostDetailEndpoint('test_post_patch_invalid_id_404'),           # patch (update)
