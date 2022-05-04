@@ -13,22 +13,12 @@ class FollowingListEndpoint(Resource):
     
     def get(self):
         # return all of the "following" records that the current user is following
-        user_ids = get_authorized_user_ids(self.current_user)
-
-        user_ids_tuples = (
-            db.session
-                .query(Following.following_id, Following.user_id, User.username)
-                .innerjoin(User, Following.id)
-                .filter(Following.user_id == self.current_user.id)
-                .order_by(Following.following_id)
-                .all()
-            )
-        print(user_ids_tuples)
-        user_ids = [id for (id,) in user_ids_tuples]
-        print(user_ids)
-        user_ids.append(self.current_user.id)
-
-        return Response(json.dumps([]), mimetype="application/json", status=200)
+        #following_ids = get_authorized_user_ids(self.current_user)
+        following = Following.query.filter(Following.user_id==self.current_user.id).all()
+        print('this is following')
+        print(following)
+        following_json = [follower.to_dict_following() for follower in following]
+        return Response(json.dumps(following_json), mimetype="application/json", status=200)
 
     def post(self):
         # create a new "following" record based on the data posted in the body 

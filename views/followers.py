@@ -19,22 +19,12 @@ class FollowerListEndpoint(Resource):
         In other words, select user_id where following_id = current_user.id
         '''
 
-        user_ids_tuples = ( #people I'm FOLLOWING.. who is following me?
-            db.session
-                .query(Following.following_id)
-                .filter(Following.following_id == self.current_user.id)
-                .order_by(Following.following_id)
-                .all()
-            )
-        print(user_ids_tuples)
-        user_ids = [id for (id,) in user_ids_tuples]
-        print(user_ids)
-        followers_json = [follower.to_dict() for follower in user_ids]
-        # user_ids.append(self.current_user.id)
-        # posts = Post.query.filter(Post.user_id.in_(user_ids)).limit(limit).all()
-        # posts_json = [post.to_dict() for post in posts]
+        followers = Following.query.filter(Following.following_id==self.current_user.id).all()
+        print('this is following')
+        print(followers)
+        followers_json = [follower.to_dict_follower() for follower in followers]
 
-        return Response(json.dumps([followers_json]), mimetype="application/json", status=200)
+        return Response(json.dumps(followers_json), mimetype="application/json", status=200)
 
 
 def initialize_routes(api):
