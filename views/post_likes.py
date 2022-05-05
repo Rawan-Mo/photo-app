@@ -3,6 +3,8 @@ from flask_restful import Resource
 from models import LikePost, db
 import json
 
+from views import can_view_post
+
 class PostLikesListEndpoint(Resource):
 
     def __init__(self, current_user):
@@ -11,8 +13,29 @@ class PostLikesListEndpoint(Resource):
     def post(self):
         # create a new "like_post" based on the data posted in the body 
         body = request.get_json()
-        print(body)
-        return Response(json.dumps({}), mimetype="application/json", status=201)
+        if not body.get('post_id'):
+            return Response(json.dumps({'message': 'post id is missing'}), mimetype="application/json", status=400)
+
+        try:
+            id = int(body.get('post_id'))
+        except:
+            return Response(json.dumps({'message': 'post id is invalid'}), mimetype="application/json", status=400)
+        
+        if not can_view_post(body.get('post_id'), self.current_user):
+            return Response(json.dumps({'message': 'unauthorized viewer'}), mimetype="application/json", status=404)
+
+        new_like = LikePost(
+            post_id = body.get('post_id'),
+            user_id = self.current_user.id
+        )
+
+        try:
+            db.session.add(new_like)
+            db.session.commit()
+        except:
+            return Response(json.dumps({'message': 'like is a duplicate'}), mimetype="application/json", status=400)
+
+        return Response(json.dumps(new_like.to_dict()), mimetype="application/json", status=201)
 
 class PostLikesDetailEndpoint(Resource):
 
@@ -21,8 +44,17 @@ class PostLikesDetailEndpoint(Resource):
     
     def delete(self, id):
         # delete "like_post" where "id"=id
-        print(id)
-        return Response(json.dumps({}), mimetype="application/json", status=200)
+        like = LikePost.query.get(id)
+
+        if not like:
+            return Response(json.dumps({'message': 'not found'}), mimetype="application/json", status=404)
+
+        if like.user_id != self.current_user.id:
+            return Response(json.dumps({'message': 'user id is invalid'}), mimetype="application/json", status=404)
+
+        LikePost.query.filter_by(id=id).delete()
+        db.session.commit()
+        return Response(json.dumps({"message": "{0} was successfully deleted.".format(id)}), mimetype="application/json", status=200)
 
 
 
