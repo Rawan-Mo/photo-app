@@ -198,39 +198,63 @@ main {
     letter-spacing: 0px;
 }
 
-.suggestions section {
+.suggestion {
     display: grid;
-    grid-template-columns: 35px 2fr 1fr;
+    grid-template-columns: 50px 2fr 1fr;
     align-items: center;
     width: 25vw;
 }
-.suggestions section > div {
-    padding: 8px;
+.suggestions div {
+    padding-top: 5px;
+    padding-bottom: 5px;
     width: 200px;
 }
-.suggestions section p, .suggestions section a {
+.suggestions p, .suggestions a {
     margin: 0px;
 }
-.suggestions section p {
+.suggestion #user {
     color: #333;
     font-weight: 600;
     overflow: hidden;
     text-overflow: ellipsis;
+    padding-left: 5px;
 }
-.suggestions section a {
+
+.suggestions a {
     font-size: 0.8em;
 }
-.suggestions section p:nth-child(2) {
+.suggestions p:nth-child(2) {
     color: #666;
     font-size: 0.8em;
     font-weight: 400;
+    padding-left:5px;
 }
-.suggestions section .pic {
+.suggestions img {
     min-width: 30px;
     min-height: 30px;
     border: solid 1px #dbdbdb;
     border-radius: 15px;
 }
+
+.suggestion p{
+    margin: 0;
+}
+
+.suggestion button{
+    padding: 5px 10px;
+    border: 1px;
+    border-radius: 5px;
+
+}
+
+.follow{
+    background: transparent;
+}
+
+.unfollow{
+    background: #fff;
+}
+
 aside header {
     display: flex;
     align-items: center;
@@ -268,3 +292,5 @@ aside header .pic {
         width: 90vw;
     }
 }
+
+
