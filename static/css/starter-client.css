@@ -257,7 +257,7 @@ main {
 
 aside header {
     display: flex;
-    align-items: center;
+    align-content: center;
     width: 25vw;
 }
 
@@ -267,6 +267,21 @@ aside header .pic {
     border-radius: 33px;
     border-width: 0px;
     margin-right: 20px;
+}
+
+aside header div{
+    align-items: center;
+}
+
+.user-profile img{
+    border: solid 1px #dbdbdb;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    align-self: center;
+}
+.user-profile h1{
+    justify-content: flex-end;
 }
 .visuallyhidden {
     display: none;

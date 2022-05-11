@@ -7,6 +7,17 @@ const story2Html = story => {
     `;
 };
 
+
+const profile2Html = profile => { 
+    return `
+    <div>
+        <img src="${ profile.thumb_url }" alt="profile pic" />
+        <h1 class="comfortaa">${ profile.username }</h1>
+    </div>
+    `;
+};
+
+
 const toggleFollow = event => {
     const elem = event.currentTarget;
     if (elem.getAttribute('aria-checked') === 'false') {
@@ -81,6 +92,67 @@ const user2Html = user => {
     `;
 };
 
+/*
+const post2Html = post => {
+    return `
+    <div class="card">
+          <div class="card-header comfortaa">
+            <h3>gibsonjack</h3>
+            <i class="fas fa-ellipsis-h"></i>
+          </div>
+          <div class="card-img">
+            <img
+              src="${ post.image_url }"
+              alt="gibsonjack post coffee table"
+            />
+          </div>
+          <div class="card-details">
+            <div class="card-details-prepost">
+              <div class="card-reactions">
+                <div class="card-reactions-socials">
+                  <i class="far fa-heart"></i>
+                  <i class="far fa-comment"></i>
+                  <i class="far fa-paper-plane"></i>
+                </div>
+                <div class="card-reactions-bookmark">
+                  <i class="far fa-bookmark"></i>
+                </div>
+              </div>
+              <div class="card-likes bold">
+                <p>30 likes</p>
+              </div>
+              <div class="card-comments">
+                <div class="card-caption">
+                  <strong>gibsonjack</strong>
+                  <p>${ post.caption }</p>
+                  <button class="card-caption-more blue">more</button>
+                </div>
+                <div class="card-comment">
+                  <strong>lizzie</strong>
+                  <p>OMG this is such a cool photo!</p>
+                </div>
+                <div class="card-comment">
+                  <strong>vanek97</strong>
+                  <p>Wow mad photo skillz dude</p>
+                </div>
+              </div>
+              <div class="card-date gray">
+                <p>1 DAY AGO</p>
+              </div>
+            </div>
+            <div class="card-comment-posting">
+              <div class="adding-comment">
+                <i class="far fa-smile"></i>
+                <p class="gray">Add a comment...</p>
+              </div>
+              <div class="card-post blue">
+                <button class="blue">Post</button>
+              </div>
+            </div>
+          </div>
+        </div>
+    `;
+};*/
 
 // fetch data from your API endpoint:
 const displayStories = () => {
@@ -97,13 +169,34 @@ const displaySuggestions = () => {
         .then(response => response.json())
         .then(users => {
             const html = users.map(user2Html).join('\n');
-            document.querySelector('.suggestions').innerHTML = html;
+            document.querySelector('.suggestions-list').innerHTML = html;
         })
 };
+
+const displayProfile = () => {
+    fetch('/api/profile')
+        .then(response => response.json())
+        .then(profile => {
+            const html = profile2Html(profile);
+            document.querySelector('.user-profile').innerHTML = html;
+        })
+};
+
+/*
+const displayPosts = () => {
+    fetch('/api/posts')
+        .then(response => response.json())
+        .then(posts => {
+            const html = posts.map(post2Html).join('\n');
+            document.querySelector('#posts').innerHTML = html;
+        })
+};
+*/
 
 const initPage = () => {
     displayStories();
     displaySuggestions();
+    displayProfile();
 };
 
 // invoke init page to display stories:
