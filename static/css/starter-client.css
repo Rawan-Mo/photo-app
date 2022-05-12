@@ -270,7 +270,10 @@ aside header .pic {
 }
 
 aside header div{
+    display: flex;
     align-items: center;
+    width: 25vw;
+    padding-bottom: 7px;
 }
 
 .user-profile img{
@@ -280,9 +283,17 @@ aside header div{
     border-radius: 50%;
     align-self: center;
 }
-.user-profile h1{
-    justify-content: flex-end;
+.user-profile h2{
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+    padding-left: 20px;
 }
+
 .visuallyhidden {
     display: none;
 }

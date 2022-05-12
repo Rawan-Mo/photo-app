@@ -12,7 +12,7 @@ const profile2Html = profile => {
     return `
     <div>
         <img src="${ profile.thumb_url }" alt="profile pic" />
-        <h1 class="comfortaa">${ profile.username }</h1>
+        <h2 class="comfortaa">${ profile.username }</h2>
     </div>
     `;
 };
