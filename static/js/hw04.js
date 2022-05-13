@@ -77,14 +77,24 @@ const unfollowUser = (followingId, elem) => {
 const toggleLike = event => {
   const elem = event.currentTarget;
 
+  if (elem.getAttribute('aria-checked') === 'false') {
+    // Issue post request to UI/API endpoint to create a new follower
+    likePost(elem.dataset.userId, elem);
+    
+} else {
+    // Issue delete request to UI/API endpoint to delete the follower
+    unlikePost(elem.dataset.postId, elem);
+}
+
+
 }
 
 const likePost = (userId, elem) => {
   const postData = {
-      "current_user_like_id": current_user_like_id + 1
+      "current_user_like_i": userId
   };
   
-  fetch("/api/following/", {
+  fetch("/api/posts/likes/", {
           method: "POST",
           headers: {
               'Content-Type': 'application/json',
@@ -94,16 +104,31 @@ const likePost = (userId, elem) => {
       .then(response => response.json())
       .then(data => {
           console.log(data);
-          elem.innerHTML = 'unfollow';
           elem.setAttribute('aria-checked', 'true');
-          elem.classList.add('unfollow');
-          elem.classList.remove('follow');
+          elem.classList.add('fas');
+          elem.classList.remove('far');
           // in the event that we want to unfollow the user
-          elem.setAttribute('data-following-id', data.id);
+          elem.setAttribute('data-post-id', data.id);
       });
 };
 
 
+const unlikePost = (postId, elem) => {
+
+  const deleteURL = `/api/posts/likes/${postId}`;
+  fetch(deleteURL, {
+      method: "DELETE",
+  })
+  .then(response => response.json())
+  .then(data => {
+      console.log(data);
+      elem.setAttribute('aria-checked', 'false');
+      elem.classList.add('far');
+      elem.classList.remove('fas');
+      elem.removeAttribute('data-post-id');
+  });
+
+};
 
 const user2Html = user => {
     return `
@@ -145,9 +170,10 @@ const post2Html = post => {
 
               <div class="card-reactions">
                 <div class="card-reactions-socials">
-                  <button class="like">
-                    data-user-id="${user.id}"
-                    onclick= 'toggleLike(event)'
+                  <button class="like"
+                    data-post-id="${post.id}"
+                    aria-checked="false"
+                    onclick= 'toggleLike(event)'>
                     <i class="far fa-heart"></i>
                   </button>
 
