@@ -17,7 +17,6 @@ const profile2Html = profile => {
     `;
 };
 
-
 const toggleFollow = event => {
     const elem = event.currentTarget;
     if (elem.getAttribute('aria-checked') === 'false') {
@@ -72,6 +71,40 @@ const unfollowUser = (followingId, elem) => {
 
 };
 
+// LIKE BUTTON FUNCTIONS
+
+// updating # of likes + changing button icon color
+const toggleLike = event => {
+  const elem = event.currentTarget;
+
+}
+
+const likePost = (userId, elem) => {
+  const postData = {
+      "current_user_like_id": current_user_like_id + 1
+  };
+  
+  fetch("/api/following/", {
+          method: "POST",
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(postData)
+      })
+      .then(response => response.json())
+      .then(data => {
+          console.log(data);
+          elem.innerHTML = 'unfollow';
+          elem.setAttribute('aria-checked', 'true');
+          elem.classList.add('unfollow');
+          elem.classList.remove('follow');
+          // in the event that we want to unfollow the user
+          elem.setAttribute('data-following-id', data.id);
+      });
+};
+
+
+
 const user2Html = user => {
     return `
         <div class="suggestion">
@@ -86,31 +119,36 @@ const user2Html = user => {
                     aria-label="Follow ${ user.username }"
                     aria-checked="false"
                     data-user-id="${user.id}"
-                    onclick="toggleFollow(event)">follow</button>
+                    onclick="toggleFollow(event)">follow
+                </button>
             </div>
         </div>
     `;
 };
 
-/*
+
 const post2Html = post => {
     return `
     <div class="card">
           <div class="card-header comfortaa">
-            <h3>gibsonjack</h3>
+            <h3>${ post.user.username }</h3>
             <i class="fas fa-ellipsis-h"></i>
           </div>
           <div class="card-img">
             <img
               src="${ post.image_url }"
-              alt="gibsonjack post coffee table"
+              alt="${ post.alt_text }"
             />
           </div>
           <div class="card-details">
             <div class="card-details-prepost">
               <div class="card-reactions">
                 <div class="card-reactions-socials">
-                  <i class="far fa-heart"></i>
+                  <button id="likeButton">
+                    data-user-id="${user.id}"
+                    onclick= 'toggleLike(event)'
+                    <i class="far fa-heart"></i>
+                  </button>
                   <i class="far fa-comment"></i>
                   <i class="far fa-paper-plane"></i>
                 </div>
@@ -119,7 +157,7 @@ const post2Html = post => {
                 </div>
               </div>
               <div class="card-likes bold">
-                <p>30 likes</p>
+                <p>${ post.likes.length } likes </p>
               </div>
               <div class="card-comments">
                 <div class="card-caption">
@@ -128,7 +166,7 @@ const post2Html = post => {
                   <button class="card-caption-more blue">more</button>
                 </div>
                 <div class="card-comment">
-                  <strong>lizzie</strong>
+                  <strong>Lizzie</strong>
                   <p>OMG this is such a cool photo!</p>
                 </div>
                 <div class="card-comment">
@@ -152,7 +190,7 @@ const post2Html = post => {
           </div>
         </div>
     `;
-};*/
+};
 
 // fetch data from your API endpoint:
 const displayStories = () => {
@@ -182,21 +220,22 @@ const displayProfile = () => {
         })
 };
 
-/*
+
 const displayPosts = () => {
-    fetch('/api/posts')
+    fetch('/api/posts/?limit=10')
         .then(response => response.json())
         .then(posts => {
             const html = posts.map(post2Html).join('\n');
             document.querySelector('#posts').innerHTML = html;
         })
 };
-*/
+
 
 const initPage = () => {
     displayStories();
     displaySuggestions();
     displayProfile();
+    displayPosts();
 };
 
 // invoke init page to display stories:
