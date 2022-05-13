@@ -192,6 +192,11 @@ main {
     margin-right: 10px;
 }
 
+.caption {
+    display: inline;
+
+}
+
 .suggestion-text {
     color: #666;
     font-weight: 600;
@@ -319,3 +324,62 @@ aside header div{
     }
 }
 
+
+
+
+
+
+  
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-self: center;
+    padding: 0px 10px;
+  }
+  
+  .card-header i {
+    align-self: center;
+  }
+  
+  .card-details-prepost {
+    margin: 8px 15px;
+  }
+  
+  .card-reactions {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  
+  .card-comment-posting {
+    display: flex;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0px;
+    padding-top: 0px;
+    border-top: 1px solid #dbdbdb;
+    /* margin: 8px 15px; */
+    padding: 0px 14px;
+    padding-top: 10px;
+    /* padding: 0px; */
+    /* grid-template-columns: 4fr 2.5fr; */
+  }
+  
+  .card-comment-posting p {
+    margin: 0px;
+    margin-top: 5px;
+  }
+  
+  .adding-comment {
+    display: flex;
+    align-items: center;
+  
+    /* justify-content: space-around; */
+  }
+  
+  .adding-comment p {
+    padding-left: 5px;
+    margin: 0px;
+  }
+  

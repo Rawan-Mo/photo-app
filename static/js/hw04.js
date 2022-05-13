@@ -142,13 +142,16 @@ const post2Html = post => {
           </div>
           <div class="card-details">
             <div class="card-details-prepost">
+
               <div class="card-reactions">
                 <div class="card-reactions-socials">
-                  <button id="likeButton">
+                  <button class="like">
                     data-user-id="${user.id}"
                     onclick= 'toggleLike(event)'
                     <i class="far fa-heart"></i>
                   </button>
+
+                  
                   <i class="far fa-comment"></i>
                   <i class="far fa-paper-plane"></i>
                 </div>
@@ -157,10 +160,10 @@ const post2Html = post => {
                 </div>
               </div>
               <div class="card-likes bold">
-                <p>${ post.likes.length } likes </p>
+                <p>${ post.likes.length } ${post.likes.length > 1 ? `likes` : `like`} </p>
               </div>
               
-              <div class="card-comments">
+              <div class="card-comments comments">
                 <div class="card-caption caption">
                   <strong>gibsonjack</strong>
                   <p>${ post.caption }</p>
@@ -188,7 +191,7 @@ const post2Html = post => {
                 <p>${post.display_time}</p>
               </div>
             </div>
-            <div class="card-comment-posting">
+            <div class="card-comment-posting add-comment">
               <div class="adding-comment">
                 <i class="far fa-smile"></i>
                 <p class="gray">Add a comment...</p>
