@@ -279,6 +279,7 @@ html {
   
   .card-date p {
     margin: 5px 0px;
+    text-transform: uppercase;
     /* padding: 5px 0px; */
   }
   

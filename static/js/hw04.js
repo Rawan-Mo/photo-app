@@ -159,23 +159,33 @@ const post2Html = post => {
               <div class="card-likes bold">
                 <p>${ post.likes.length } likes </p>
               </div>
+              
               <div class="card-comments">
-                <div class="card-caption">
+                <div class="card-caption caption">
                   <strong>gibsonjack</strong>
                   <p>${ post.caption }</p>
                   <button class="card-caption-more blue">more</button>
                 </div>
-                <div class="card-comment">
-                  <strong>Lizzie</strong>
-                  <p>OMG this is such a cool photo!</p>
+
+                ${post.comments.length > 1 ?  
+                  `
+                  <p class="view-all blue"> View all ${post.comments.length} comments </p>
+                  `
+                  : ''
+                }
+
+                ${post.comments.length > 0 ?  
+                  `
+                  <div class="card-comment">
+                  <strong>${post.comments[0].user.username}</strong>
+                  <p>${post.comments[0].text}</p>
+                  </div>
+                  `
+                  : ''
+                }
                 </div>
-                <div class="card-comment">
-                  <strong>vanek97</strong>
-                  <p>Wow mad photo skillz dude</p>
-                </div>
-              </div>
-              <div class="card-date gray">
-                <p>1 DAY AGO</p>
+              <div class="timestamp">
+                <p>${post.display_time}</p>
               </div>
             </div>
             <div class="card-comment-posting">
