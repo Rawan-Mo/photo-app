@@ -78,20 +78,24 @@ const toggleLike = event => {
   const elem = event.currentTarget;
 
   if (elem.getAttribute('aria-checked') === 'false') {
-    // Issue post request to UI/API endpoint to create a new follower
-    likePost(elem.dataset.userId, elem);
+    // Issue post request to UI/API endpoint to like a post
+    likePost(elem.dataset.userId, elem.dataset.likeId, elem.dataset.postId, elem);
     
 } else {
-    // Issue delete request to UI/API endpoint to delete the follower
-    unlikePost(elem.dataset.postId, elem);
+    // Issue delete request to UI/API endpoint to delete the like
+    unlikePost(elem.dataset.postId, elem.dataset.likeId, elem);
 }
 
 
 }
 
-const likePost = (userId, elem) => {
+const likePost = (likeId, userId, postId, elem) => {
   const postData = {
-      "current_user_like_i": userId
+      "current_user_like_id": likeId,
+      "user_id": userId,
+      "post_id": postId,
+
+
   };
   
   fetch("/api/posts/likes/", {
@@ -107,25 +111,30 @@ const likePost = (userId, elem) => {
           elem.setAttribute('aria-checked', 'true');
           elem.classList.add('fas');
           elem.classList.remove('far');
-          // in the event that we want to unfollow the user
+          // in the event that we want to unlike the post
+          // elem.setAttribute('data-post-id', data.id);
           elem.setAttribute('data-post-id', data.id);
+          elem.setAttribute('data-like-id', data.likeId);
       });
 };
 
 
-const unlikePost = (postId, elem) => {
+const unlikePost = (postId, likeId, elem) => {
 
-  const deleteURL = `/api/posts/likes/${postId}`;
+  const deleteURL = `/api/posts/${postId}/likes/${likeId}`;
   fetch(deleteURL, {
       method: "DELETE",
   })
   .then(response => response.json())
   .then(data => {
       console.log(data);
+      console.log('postId ' + postId);
+      console.log('likeId ' + likeId);
       elem.setAttribute('aria-checked', 'false');
       elem.classList.add('far');
       elem.classList.remove('fas');
       elem.removeAttribute('data-post-id');
+      elem.removeAttribute('data-like-id');
   });
 
 };
@@ -172,6 +181,8 @@ const post2Html = post => {
                 <div class="card-reactions-socials">
                   <button class="like"
                     data-post-id="${post.id}"
+                    data-like-id="${post.current_user_like_id}"
+                    data-user-id="${post.likes.user_id}"
                     aria-checked="false"
                     onclick= 'toggleLike(event)'>
                     <i class="far fa-heart"></i>
