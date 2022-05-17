@@ -132,16 +132,24 @@ const unlikePost = (postId, likeId, elem) => {
 
 };
 
-const updatePost = (postId, callback) => {
-  fetch(`/api/posts/${postId}`)
-    .then(response => response.json())
-    .then(post => {
-      const elem = document.querySelector(`#post-${post.id}`);
-      const node = html2Element(post2Html(post));
-      elem.replaceWith(node)
-    })
-}
-// FIND COMMENT
+const postComment = event => {
+  const elem = event.currentTarget;
+
+  addComment(elem.dataset.postId, elem.dataset.comment, elem)
+
+//   if (elem.getAttribute('aria-checked') === 'false') {
+//     // Issue post request to UI/API endpoint to like a post
+//     likePost(elem.dataset.postId, elem);
+    
+// } else {
+//     // Issue delete request to UI/API endpoint to delete the like
+//     unlikePost(elem.dataset.postId, elem.dataset.likeId, elem);
+// }
+
+
+} 
+
+// ADDING A COMMENT [find variable comment]
 const addComment = (postId, comment, elem) => { 
   const postData = {
       "post_id": postId,
@@ -163,6 +171,22 @@ const addComment = (postId, comment, elem) => {
           elem.querySelector('.comment-textbox').focus();
       });
 };
+
+
+// UPDATING POST TO RE-RENDER
+const updatePost = (postId, callback) => {
+  fetch(`/api/posts/${postId}`)
+    .then(response => response.json())
+    .then(post => {
+      const elem = document.querySelector(`#post-${post.id}`);
+      const node = html2Element(post2Html(post));
+      elem.replaceWith(node)
+    })
+}
+
+const html2Element = () => {
+
+}
 
 const user2Html = user => {
     return `
@@ -188,7 +212,7 @@ const user2Html = user => {
 
 const post2Html = post => {
     return `
-    <div class="card">
+    <div class="card" id="post-${post.id}">
           <div class="card-header comfortaa">
             <h3>${ post.user.username }</h3>
             <i class="fas fa-ellipsis-h"></i>
@@ -204,7 +228,7 @@ const post2Html = post => {
 
               <div class="card-reactions">
                 <div class="card-reactions-socials">
-                  <button class="like"
+                  <button class="like ourButton"
                     data-post-id="${post.id}"
                     data-like-id="${post.current_user_like_id || "" }"
                     aria-checked="${post.current_user_like_id ? 'true' : 'false'}"
@@ -258,7 +282,7 @@ const post2Html = post => {
                 <input type="text" id ="add-comment" placeholder ="Add a comment..." />
               </div>
               <div class="card-post blue">
-                <button class="blue">Post</button>
+                <button class="blue" onClick='postComment(event)'>Post</button>
               </div>
             </div>
           </div>

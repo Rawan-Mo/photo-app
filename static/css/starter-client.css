@@ -451,3 +451,14 @@ body * {
     background: none;
     border: none;
 }
+
+.fas.fa-heart {
+    color: red;
+}
+
+
+.card-reactions-socials button {
+    background: none;
+    border: none;
+}
+
