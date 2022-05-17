@@ -79,7 +79,7 @@ const toggleLike = event => {
 
   if (elem.getAttribute('aria-checked') === 'false') {
     // Issue post request to UI/API endpoint to like a post
-    likePost(elem.dataset.userId, elem.dataset.likeId, elem.dataset.postId, elem);
+    likePost(elem.dataset.postId, elem);
     
 } else {
     // Issue delete request to UI/API endpoint to delete the like
@@ -89,13 +89,9 @@ const toggleLike = event => {
 
 }
 
-const likePost = (likeId, userId, postId, elem) => {
+const likePost = (postId, elem) => {
   const postData = {
-      "current_user_like_id": likeId,
-      "user_id": userId,
       "post_id": postId,
-
-
   };
   
   fetch("/api/posts/likes/", {
@@ -109,19 +105,18 @@ const likePost = (likeId, userId, postId, elem) => {
       .then(data => {
           console.log(data);
           elem.setAttribute('aria-checked', 'true');
-          elem.classList.add('fas');
-          elem.classList.remove('far');
           // in the event that we want to unlike the post
-          // elem.setAttribute('data-post-id', data.id);
-          elem.setAttribute('data-post-id', data.id);
-          elem.setAttribute('data-like-id', data.likeId);
+          elem.setAttribute('data-like-id', data.id);
+
+          // updatePost(data.id);
+          displayPosts();
       });
 };
 
 
 const unlikePost = (postId, likeId, elem) => {
 
-  const deleteURL = `/api/posts/${postId}/likes/${likeId}`;
+  const deleteURL = `/api/posts/likes/${likeId}`;
   fetch(deleteURL, {
       method: "DELETE",
   })
@@ -131,12 +126,42 @@ const unlikePost = (postId, likeId, elem) => {
       console.log('postId ' + postId);
       console.log('likeId ' + likeId);
       elem.setAttribute('aria-checked', 'false');
-      elem.classList.add('far');
-      elem.classList.remove('fas');
-      elem.removeAttribute('data-post-id');
       elem.removeAttribute('data-like-id');
+      displayPosts();
   });
 
+};
+
+const updatePost = (postId, callback) => {
+  fetch(`/api/posts/${postId}`)
+    .then(response => response.json())
+    .then(post => {
+      const elem = document.querySelector(`#post-${post.id}`);
+      const node = html2Element(post2Html(post));
+      elem.replaceWith(node)
+    })
+}
+// FIND COMMENT
+const addComment = (postId, comment, elem) => { 
+  const postData = {
+      "post_id": postId,
+      "text": comment
+  };
+  console.log(postData)
+  
+  fetch("/api/comments/", {
+          method: "POST",
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(postData)
+      })
+      .then(response => response.json())
+      .then(comment => {
+        // updatePost(comment.post_id, () )
+          const elem = document.querySelector(`#post-${postId}`)
+          elem.querySelector('.comment-textbox').focus();
+      });
 };
 
 const user2Html = user => {
@@ -181,11 +206,10 @@ const post2Html = post => {
                 <div class="card-reactions-socials">
                   <button class="like"
                     data-post-id="${post.id}"
-                    data-like-id="${post.current_user_like_id}"
-                    data-user-id="${post.likes.user_id}"
-                    aria-checked="false"
+                    data-like-id="${post.current_user_like_id || "" }"
+                    aria-checked="${post.current_user_like_id ? 'true' : 'false'}"
                     onclick= 'toggleLike(event)'>
-                    <i class="far fa-heart"></i>
+                    <i class="${post.current_user_like_id ? 'fas' : 'far'} fa-heart"></i>
                   </button>
 
                   
@@ -209,7 +233,7 @@ const post2Html = post => {
 
                 ${post.comments.length > 1 ?  
                   `
-                  <button class="view-all blue" onclick="openModal(event);"> View all ${post.comments.length} comments </button>
+                  <p class="view-all blue"> View all ${post.comments.length} comments </p>
                   `
                   : ''
                 }
@@ -229,9 +253,9 @@ const post2Html = post => {
               </div>
             </div>
             <div class="card-comment-posting add-comment">
-              <div class="adding-comment">
+              <div class="adding-comment" id="comment-textbox">
                 <i class="far fa-smile"></i>
-                <p class="gray">Add a comment...</p>
+                <input type="text" id ="add-comment" placeholder ="Add a comment..." />
               </div>
               <div class="card-post blue">
                 <button class="blue">Post</button>
@@ -272,7 +296,7 @@ const displayProfile = () => {
 
 
 const displayPosts = () => {
-    fetch('/api/posts/?limit=10')
+    fetch('/api/posts/?limit=20')
         .then(response => response.json())
         .then(posts => {
             const html = posts.map(post2Html).join('\n');
@@ -280,34 +304,6 @@ const displayPosts = () => {
         })
 };
 
-
-const modalElement = document.querySelector('.modal-bg');
-
-const openModal = ev => {
-    console.log('open!');
-    modalElement.classList.remove('hidden');
-    modalElement.setAttribute('aria-hidden', 'false');
-    document.querySelector('.close').focus();
-}
-
-const closeModal = ev => {
-    console.log('close!');
-    modalElement.classList.add('hidden');
-    modalElement.setAttribute('aria-hidden', 'false');
-    document.querySelector('.open').focus();
-};
-
-
-// function ensures that if the tabbing gets to the end of the 
-// modal, it will loop back up to the beginning of the modal:
-document.addEventListener('focus', function(event) {
-    console.log('focus');
-    if (modalElement.getAttribute('aria-hidden') === 'false' && !modalElement.contains(event.target)) {
-        console.log('back to top!');
-        event.stopPropagation();
-        document.querySelector('.close').focus();
-    }
-}, true);
 
 const initPage = () => {
     displayStories();
@@ -318,3 +314,6 @@ const initPage = () => {
 
 // invoke init page to display stories:
 initPage();
+
+
+// RE-RENDER POST FUNCTION 
