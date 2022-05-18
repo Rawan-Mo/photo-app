@@ -17,6 +17,74 @@ const profile2Html = profile => {
     `;
 };
 
+const post2Html = post => {
+    return `
+    <div class="card" id="post-${post.id}">
+          <div class="card-header comfortaa">
+            <h3>${ post.user.username }</h3>
+            <i class="fas fa-ellipsis-h"></i>
+          </div>
+          <div class="card-img">
+            <img
+              src="${ post.image_url }"
+              alt="${ post.alt_text }"
+            />
+          </div>
+          <div class="card-details">
+            <div class="card-details-prepost">
+
+              <div class="card-reactions">
+                <div class="card-reactions-socials"> 
+                    ${ renderLikeButton(post) }                 
+                    <i class="far fa-comment"></i>
+                    <i class="far fa-paper-plane"></i>
+                </div>
+                <div class="card-reactions-bookmark">
+                    ${ renderBookmarkButton(post) }
+                </div>
+              </div>
+              <div class="card-likes bold">
+                <p>${ post.likes.length } ${post.likes.length > 1 ? `likes` : `like`} </p>
+              </div>
+              
+              <div class="card-comments comments">
+                <div class="card-caption caption">
+                  <strong>gibsonjack</strong>
+                  <p>${ post.caption }</p>
+                  <button class="card-caption-more blue">more</button>
+                </div>
+                    ${ displayComments(post) }
+                </div>
+              <div class="timestamp">
+                <p>${post.display_time}</p>
+              </div>
+            </div>
+            <div class="card-comment-posting add-comment">
+              <div class="adding-comment" id="comment-textbox">
+                <i class="far fa-smile"></i>
+                <input type="text" id ="add-comment" placeholder ="Add a comment..." />
+              </div>
+              <div class="card-post blue">
+                <button class="blue" onClick='postComment(event)'>Post</button>
+              </div>
+            </div>
+          </div>
+        </div>
+    `;
+};
+
+const post2Modal = post => {
+    return `
+    <div class="modal-bg hidden" aria-hidden="false" role="dialog">
+        <section class="modal">
+            <button class="close ourButton" aria-label="Close the modal window" onclick="closeModal(event);">
+                <i class="fas fa-times close-btn"></i>
+            </button>
+            <img src="${ post.image_url }" alt="${ post.alt_text }" />
+        </section>
+    </div>`;
+};
+
 const toggleFollow = event => {
     const elem = event.currentTarget;
     if (elem.getAttribute('aria-checked') === 'false') {
@@ -74,20 +142,20 @@ const unfollowUser = (followingId, elem) => {
 // LIKE BUTTON FUNCTIONS
 
 // updating # of likes + changing button icon color
-const toggleLike = event => {
-  const elem = event.currentTarget;
+const handleLike = event => {
+    const elem = event.currentTarget;
 
-  if (elem.getAttribute('aria-checked') === 'false') {
-    // Issue post request to UI/API endpoint to like a post
-    likePost(elem.dataset.postId, elem);
-    
-} else {
-    // Issue delete request to UI/API endpoint to delete the like
-    unlikePost(elem.dataset.postId, elem.dataset.likeId, elem);
-}
-
-
-}
+    if (elem.getAttribute('aria-checked') === 'false') {
+        // Issue post request to UI/API endpoint to like a post
+        // If we want to retrieve data-like-id from the like button, we can use the following:
+        // elem.dataset.likeId;
+        likePost(Number(elem.dataset.postId), elem);
+        
+    } else {
+        // Issue delete request to UI/API endpoint to delete the like
+        unlikePost(Number(elem.dataset.postId), Number(elem.dataset.likeId), elem);
+    };
+};
 
 const likePost = (postId, elem) => {
   const postData = {
@@ -109,27 +177,109 @@ const likePost = (postId, elem) => {
           elem.setAttribute('data-like-id', data.id);
 
           // updatePost(data.id);
-          displayPosts();
+            updatePost(postId);
       });
 };
 
-
 const unlikePost = (postId, likeId, elem) => {
+  
+    const deleteURL = `/api/posts/likes/${likeId}`;
+    fetch(deleteURL, {
+        method: "DELETE",
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        console.log('postId ' + postId);
+        console.log('likeId ' + likeId);
+        elem.setAttribute('aria-checked', 'false');
+        elem.removeAttribute('data-like-id');
+        updatePost(postId);
+    });
+  
+};
 
-  const deleteURL = `/api/posts/likes/${likeId}`;
+// BOOKMARK BUTTON FUNCTIONS
+
+const handleBookmark = event => {
+    const elem = event.currentTarget;
+
+    if (elem.getAttribute('aria-checked') === 'false') {
+        // Issue post request to UI/API endpoint to like a post
+        // If we want to retrieve data-like-id from the like button, we can use the following:
+        // elem.dataset.likeId;
+        bookmarkPost(Number(elem.dataset.postId), elem);
+        
+    } else {
+        // Issue delete request to UI/API endpoint to delete the like
+        unbookmarkPost(Number(elem.dataset.postId), Number(elem.dataset.bookmarkId), elem);
+    };
+};
+
+const unbookmarkPost = (postId, bookmarkId, elem) => {
+
+  const deleteURL = `/api/bookmarks/${bookmarkId}`;
   fetch(deleteURL, {
       method: "DELETE",
   })
   .then(response => response.json())
   .then(data => {
       console.log(data);
-      console.log('postId ' + postId);
-      console.log('likeId ' + likeId);
       elem.setAttribute('aria-checked', 'false');
-      elem.removeAttribute('data-like-id');
-      displayPosts();
+      elem.removeAttribute('data-bookmark-id');
+      updatePost(postId);
   });
 
+};
+
+const bookmarkPost = (postId, elem) => {
+    const postData = {
+        "post_id": postId,
+    };
+    
+    fetch("/api/bookmarks/", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(postData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            elem.setAttribute('aria-checked', 'true');
+            // in the event that we want to unlike the post
+            elem.setAttribute('data-bookmark-id', data.id);
+  
+            // updatePost(data.id);
+              updatePost(postId);
+        });
+  };
+  
+// COMMENT FUNCTIONS
+
+const displayComments = post => {
+    
+    if (post.comments.length > 1) {
+        return `
+        <button class="view-all blue ourButton" data-post-id=${post.id} onClick="showModal(event)"> View all ${post.comments.length} comments </button>
+        <div class="card-comment">
+        <strong>${post.comments[0].user.username}</strong>
+        <p>${post.comments[0].text}</p>
+        </div>
+        `;
+
+    } else if (post.comments.length === 1) {
+        return `
+        <div class="card-comment">
+        <strong>${post.comments[0].user.username}</strong>
+        <p>${post.comments[0].text}</p>
+        </div>
+        `;
+
+    } else {
+        return '';
+    }
 };
 
 const postComment = event => {
@@ -172,21 +322,33 @@ const addComment = (postId, comment, elem) => {
       });
 };
 
-
-// UPDATING POST TO RE-RENDER
+// RE-RENDER POST FUNCTION 
 const updatePost = (postId, callback) => {
   fetch(`/api/posts/${postId}`)
     .then(response => response.json())
-    .then(post => {
-      const elem = document.querySelector(`#post-${post.id}`);
-      const node = html2Element(post2Html(post));
-      elem.replaceWith(node)
+    .then(updatedPost => {
+        if (!callback){
+            redrawCard(updatedPost);
+        } else{
+            callback(updatedPost);
+        }
     })
-}
+};
 
-const html2Element = () => {
+const redrawCard = post => {
+    const html = post2Html(post);
+    const newElement = string2Html(html);
+    const elem = document.querySelector(`#post-${post.id}`);
+    elem.innerHTML = newElement.innerHTML;
+};
 
-}
+
+const string2Html = htmlString => {
+    var parser = new DOMParser();
+    var doc = parser.parseFromString(htmlString, "text/html");
+    return doc.body.firstChild;
+
+};
 
 const user2Html = user => {
     return `
@@ -209,85 +371,43 @@ const user2Html = user => {
     `;
 };
 
-
-const post2Html = post => {
+const renderLikeButton = post => {
     return `
-    <div class="card" id="post-${post.id}">
-          <div class="card-header comfortaa">
-            <h3>${ post.user.username }</h3>
-            <i class="fas fa-ellipsis-h"></i>
-          </div>
-          <div class="card-img">
-            <img
-              src="${ post.image_url }"
-              alt="${ post.alt_text }"
-            />
-          </div>
-          <div class="card-details">
-            <div class="card-details-prepost">
-
-              <div class="card-reactions">
-                <div class="card-reactions-socials">
-                  <button class="like ourButton"
-                    data-post-id="${post.id}"
-                    data-like-id="${post.current_user_like_id || "" }"
-                    aria-checked="${post.current_user_like_id ? 'true' : 'false'}"
-                    onclick= 'toggleLike(event)'>
-                    <i class="${post.current_user_like_id ? 'fas' : 'far'} fa-heart"></i>
-                  </button>
-
-                  
-                  <i class="far fa-comment"></i>
-                  <i class="far fa-paper-plane"></i>
-                </div>
-                <div class="card-reactions-bookmark">
-                  <i class="far fa-bookmark"></i>
-                </div>
-              </div>
-              <div class="card-likes bold">
-                <p>${ post.likes.length } ${post.likes.length > 1 ? `likes` : `like`} </p>
-              </div>
-              
-              <div class="card-comments comments">
-                <div class="card-caption caption">
-                  <strong>gibsonjack</strong>
-                  <p>${ post.caption }</p>
-                  <button class="card-caption-more blue">more</button>
-                </div>
-
-                ${post.comments.length > 1 ?  
-                  `
-                  <p class="view-all blue"> View all ${post.comments.length} comments </p>
-                  `
-                  : ''
-                }
-
-                ${post.comments.length > 0 ?  
-                  `
-                  <div class="card-comment">
-                  <strong>${post.comments[0].user.username}</strong>
-                  <p>${post.comments[0].text}</p>
-                  </div>
-                  `
-                  : ''
-                }
-                </div>
-              <div class="timestamp">
-                <p>${post.display_time}</p>
-              </div>
-            </div>
-            <div class="card-comment-posting add-comment">
-              <div class="adding-comment" id="comment-textbox">
-                <i class="far fa-smile"></i>
-                <input type="text" id ="add-comment" placeholder ="Add a comment..." />
-              </div>
-              <div class="card-post blue">
-                <button class="blue" onClick='postComment(event)'>Post</button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <button class="like ourButton"
+                data-post-id="${post.id}"
+                data-like-id="${post.current_user_like_id || "" }"
+                aria-label="Like / Unlike"
+                aria-checked="${post.current_user_like_id ? 'true' : 'false'}"
+                onclick= 'handleLike(event)'>
+                <i class="${post.current_user_like_id ? 'fas' : 'far'} fa-heart"></i>
+        </button>
     `;
+};
+
+const renderBookmarkButton = post => {
+    return `
+        <button class="like ourButton"
+                data-post-id="${post.id}"
+                data-bookmark-id="${post.current_user_bookmark_id || "" }"
+                aria-label="Bookmark / Unbookmark"
+                aria-checked="${post.current_user_bookmark_id ? 'true' : 'false'}"
+                onclick= 'handleBookmark(event)'>
+                <i class="${post.current_user_bookmark_id ? 'fas' : 'far'} fa-bookmark"></i>
+        </button>
+    `;
+};
+
+// Modal Functions
+const closeModal = event => {
+
+};
+
+const showModal = event => {
+    const postId = Number(event.currentTarget.dataset.postId);
+    updatePost(postId, post => {
+        const html = post2Modal(post);
+        document.querySelector(`#post-${post.id}`).insertAdjacentHTML('beforeend', html);
+    });
 };
 
 // fetch data from your API endpoint:
@@ -340,4 +460,3 @@ const initPage = () => {
 initPage();
 
 
-// RE-RENDER POST FUNCTION 
