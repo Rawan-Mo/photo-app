@@ -3,6 +3,8 @@ from flask_restful import Resource
 import json
 from models import db, Comment, Post
 from views import can_view_post
+from flask_jwt_extended import current_user 
+
 
 class CommentListEndpoint(Resource):
 
@@ -65,12 +67,12 @@ def initialize_routes(api):
         CommentListEndpoint, 
         '/api/comments', 
         '/api/comments/',
-        resource_class_kwargs={'current_user': api.app.current_user}
+        resource_class_kwargs={'current_user': current_user}
 
     )
     api.add_resource(
         CommentDetailEndpoint, 
         '/api/comments/<int:id>', 
         '/api/comments/<int:id>/',
-        resource_class_kwargs={'current_user': api.app.current_user}
+        resource_class_kwargs={'current_user': current_user}
     )

@@ -5,6 +5,9 @@ import json
 
 from views import can_view_post
 
+from flask_jwt_extended import current_user 
+
+
 class PostLikesListEndpoint(Resource):
 
     def __init__(self, current_user):
@@ -63,12 +66,12 @@ def initialize_routes(api):
         PostLikesListEndpoint, 
         '/api/posts/likes', 
         '/api/posts/likes/', 
-        resource_class_kwargs={'current_user': api.app.current_user}
+        resource_class_kwargs={'current_user': current_user}
     )
 
     api.add_resource(
         PostLikesDetailEndpoint, 
         '/api/posts/likes/<int:id>', 
         '/api/posts/likes/<int:id>/',
-        resource_class_kwargs={'current_user': api.app.current_user}
+        resource_class_kwargs={'current_user': current_user}
     )

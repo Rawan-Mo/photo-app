@@ -5,6 +5,9 @@ import json
 
 from views import can_view_post
 
+from flask_jwt_extended import current_user 
+
+
 class BookmarksListEndpoint(Resource):
 
     def __init__(self, current_user):
@@ -70,12 +73,12 @@ def initialize_routes(api):
         BookmarksListEndpoint, 
         '/api/bookmarks', 
         '/api/bookmarks/', 
-        resource_class_kwargs={'current_user': api.app.current_user}
+        resource_class_kwargs={'current_user': current_user}
     )
 
     api.add_resource(
         BookmarkDetailEndpoint, 
         '/api/bookmarks/<int:id>', 
         '/api/bookmarks/<int:id>',
-        resource_class_kwargs={'current_user': api.app.current_user}
+        resource_class_kwargs={'current_user': current_user}
     )

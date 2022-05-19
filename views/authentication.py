@@ -2,6 +2,8 @@ from flask import request, \
     make_response, render_template, redirect
 from models import User
 import flask_jwt_extended
+from flask_jwt_extended import current_user 
+
 
 def logout():
     response = make_response(redirect('/login', 302))

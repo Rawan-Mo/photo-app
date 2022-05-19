@@ -3,6 +3,8 @@ from flask_restful import Resource
 from models import User
 from views import get_authorized_user_ids
 import json
+from flask_jwt_extended import current_user 
+
 
 class SuggestionsListEndpoint(Resource):
 
@@ -24,5 +26,5 @@ def initialize_routes(api):
         SuggestionsListEndpoint, 
         '/api/suggestions', 
         '/api/suggestions/', 
-        resource_class_kwargs={'current_user': api.app.current_user}
+        resource_class_kwargs={'current_user': current_user}
     )
