@@ -51,7 +51,7 @@ const post2Html = post => {
                 <div class="card-caption caption">
                   <strong>gibsonjack</strong>
                   <p>${ post.caption }</p>
-                  <button class="card-caption-more blue">more</button>
+                  <button class="card-caption-more blue ourButton">more</button>
                 </div>
                     ${ displayComments(post) }
                 </div>
@@ -60,12 +60,12 @@ const post2Html = post => {
               </div>
             </div>
             <div class="card-comment-posting add-comment">
-              <div class="adding-comment" id="comment-textbox">
+              <div class="adding-comment" >
                 <i class="far fa-smile"></i>
                 <input type="text" id ="add-comment" placeholder ="Add a comment..." />
               </div>
-              <div class="card-post blue">
-                <button class="blue" onClick='postComment(event)'>Post</button>
+              <div class="card-post blue" id="comment-textbox">
+                <button class="blue ourButton" data-post-id = ${post.id} onClick='postComment(event)'>Post</button>
               </div>
             </div>
           </div>
@@ -77,7 +77,7 @@ const post2Modal = post => {
     return `
     <div class="modal-bg hidden" aria-hidden="false" role="dialog">
         <section class="modal">
-            <button class="close ourButton" aria-label="Close the modal window" onclick="closeModal(event);">
+            <button class="close ourButton" aria-label="Close the modal window" onclick="closeModal(event)">
                 <i class="fas fa-times close-btn"></i>
             </button>
             <img src="${ post.image_url }" alt="${ post.alt_text }" />
@@ -284,8 +284,12 @@ const displayComments = post => {
 
 const postComment = event => {
   const elem = event.currentTarget;
+  const elem2 = document.querySelector(`#post-${elem.dataset.postId}`);
 
-  addComment(elem.dataset.postId, elem.dataset.comment, elem)
+  // const elem3 = elem2.getElementById('add-comment').value;
+  const attempt = document.getElementById('add-comment').value;
+
+  addComment(elem.dataset.postId, attempt, elem)
 
 //   if (elem.getAttribute('aria-checked') === 'false') {
 //     // Issue post request to UI/API endpoint to like a post
@@ -316,10 +320,14 @@ const addComment = (postId, comment, elem) => {
       })
       .then(response => response.json())
       .then(comment => {
-        // updatePost(comment.post_id, () )
+        updatePost(comment.post_id, ()  => {
           const elem = document.querySelector(`#post-${postId}`)
-          elem.querySelector('.comment-textbox').focus();
+          elem.querySelector('#comment-textbox').focus();
+        
+        });
+          
       });
+      comment = "";
 };
 
 // RE-RENDER POST FUNCTION 
@@ -338,8 +346,8 @@ const updatePost = (postId, callback) => {
 const redrawCard = post => {
     const html = post2Html(post);
     const newElement = string2Html(html);
-    const elem = document.querySelector(`#post-${post.id}`);
-    elem.innerHTML = newElement.innerHTML;
+    const postElement = document.querySelector(`#post-${post.id}`);
+    postElement.innerHTML = newElement.innerHTML;
 };
 
 
@@ -399,6 +407,8 @@ const renderBookmarkButton = post => {
 
 // Modal Functions
 const closeModal = event => {
+  console.log('close modal!')
+  document.querySelector('.modal-bg').remove();
 
 };
 

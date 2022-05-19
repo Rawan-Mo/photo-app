@@ -462,3 +462,10 @@ body * {
     border: none;
 }
 
+.blue{
+    color: #007eb2;
+}
+
+.fas, .far{
+    font-size: 20px;
+}
