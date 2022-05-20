@@ -81,9 +81,28 @@ const post2Modal = post => {
                 <i class="fas fa-times close-btn"></i>
             </button>
             <img src="${ post.image_url }" alt="${ post.alt_text }" />
+
+            <div class="comments">
+                ${post.comments.map(comment2Html).join("\n")}
+                
+            </div>
+
+    
         </section>
+
     </div>`;
 };
+
+comment2Html = comment => {
+    return `
+        <div class ="comment">
+            
+            <strong> ${comment.user.username} </strong>
+            <p> ${comment.text} </p>
+            <p> ${comment.display_time} </p>
+        </div>
+    `
+}
 
 const toggleFollow = event => {
     const elem = event.currentTarget;
