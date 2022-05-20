@@ -60,12 +60,12 @@ const post2Html = post => {
               </div>
             </div>
             <div class="card-comment-posting add-comment">
-              <div class="adding-comment" >
+              <div class="adding-comment" id="comment-textbox">
                 <i class="far fa-smile"></i>
                 <input type="text" id ="add-comment" placeholder ="Add a comment..." />
               </div>
-              <div class="card-post blue" id="comment-textbox">
-                <button class="blue ourButton" data-post-id = ${post.id} onClick='postComment(event)'>Post</button>
+              <div class="card-post blue">
+                <button class="blue ourButton" onClick='postComment(event)'>Post</button>
               </div>
             </div>
           </div>
@@ -77,7 +77,7 @@ const post2Modal = post => {
     return `
     <div class="modal-bg hidden" aria-hidden="false" role="dialog">
         <section class="modal">
-            <button class="close ourButton" aria-label="Close the modal window" onclick="closeModal(event)">
+            <button class="close ourButton" aria-label="Close the modal window" onclick="closeModal(event);">
                 <i class="fas fa-times close-btn"></i>
             </button>
             <img src="${ post.image_url }" alt="${ post.alt_text }" />
@@ -284,12 +284,8 @@ const displayComments = post => {
 
 const postComment = event => {
   const elem = event.currentTarget;
-  const elem2 = document.querySelector(`#post-${elem.dataset.postId}`);
 
-  // const elem3 = elem2.getElementById('add-comment').value;
-  const attempt = document.getElementById('add-comment').value;
-
-  addComment(elem.dataset.postId, attempt, elem)
+  addComment(elem.dataset.postId, elem.dataset.comment, elem)
 
 //   if (elem.getAttribute('aria-checked') === 'false') {
 //     // Issue post request to UI/API endpoint to like a post
@@ -320,14 +316,10 @@ const addComment = (postId, comment, elem) => {
       })
       .then(response => response.json())
       .then(comment => {
-        updatePost(comment.post_id, ()  => {
+        // updatePost(comment.post_id, () )
           const elem = document.querySelector(`#post-${postId}`)
-          elem.querySelector('#comment-textbox').focus();
-        
-        });
-          
+          elem.querySelector('.comment-textbox').focus();
       });
-      comment = "";
 };
 
 // RE-RENDER POST FUNCTION 
@@ -346,8 +338,8 @@ const updatePost = (postId, callback) => {
 const redrawCard = post => {
     const html = post2Html(post);
     const newElement = string2Html(html);
-    const postElement = document.querySelector(`#post-${post.id}`);
-    postElement.innerHTML = newElement.innerHTML;
+    const elem = document.querySelector(`#post-${post.id}`);
+    elem.innerHTML = newElement.innerHTML;
 };
 
 
@@ -407,18 +399,36 @@ const renderBookmarkButton = post => {
 
 // Modal Functions
 const closeModal = event => {
-  console.log('close modal!')
-  document.querySelector('.modal-bg').remove();
-
+    console.log('close!');
+    document.querySelector('.modal-bg').classList.add('hidden');
+    document.querySelector('.modal-bg').setAttribute('aria-hidden', 'false');
+    document.querySelector('.open').focus();
 };
 
 const showModal = event => {
     const postId = Number(event.currentTarget.dataset.postId);
+    const modalElement = document.querySelector('.modal-bg');
+
     updatePost(postId, post => {
+        console.log("modal open")
         const html = post2Modal(post);
         document.querySelector(`#post-${post.id}`).insertAdjacentHTML('beforeend', html);
-    });
+        document.querySelector('.modal-bg').classList.remove('hidden');
+        document.querySelector('.modal-bg').setAttribute('aria-hidden', 'false');
+        document.body.style.overflowY = 'hidden';
+        // This is to ensure that the tabbing happens in the modal and loops back to the top of the modal
+        modalElement.addEventListener('focus', function(event) {
+            console.log('focus');
+            if (modalElement.getAttribute('aria-hidden') === 'false' && !modalElement.contains(event.target)) {
+                console.log('back to top!');
+                event.stopPropagation();
+                document.querySelector('.close').focus();
+            }
+        }, true);
+        
+    });    
 };
+
 
 // fetch data from your API endpoint:
 const displayStories = () => {
