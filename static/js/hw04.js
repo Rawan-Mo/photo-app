@@ -62,10 +62,10 @@ const post2Html = post => {
             <div class="card-comment-posting add-comment">
               <div class="adding-comment" id="comment-textbox">
                 <i class="far fa-smile"></i>
-                <input type="text" id ="add-comment" placeholder ="Add a comment..." />
+                <input type="text" id="input-comment-${post.id}" value="" aria-label= "Add a comment" placeholder ="Add a comment..." />
               </div>
               <div class="card-post blue">
-                <button class="blue ourButton" onClick='postComment(event)'>Post</button>
+                <button class="blue ourButton" data-post-id="${post.id}" aria-label= "Post Comment" onClick='addComment(event)'>Post</button>
               </div>
             </div>
           </div>
@@ -77,18 +77,30 @@ const post2Modal = post => {
     return `
     <div class="modal-bg hidden" aria-hidden="false" role="dialog">
         <section class="modal">
-            <button class="close ourButton" aria-label="Close the modal window" onclick="closeModal(event);">
+            <button class="close ourButton" id="close-btn" aria-label="Close the modal window" onclick="closeModal(event);">
                 <i class="fas fa-times close-btn"></i>
             </button>
-            <img src="${ post.image_url }" alt="${ post.alt_text }" />
-
-            <div class="comments">
-                ${post.comments.map(comment2Html).join("\n")}
-                
+           <div class="modal-div"
+           <div>
+            <img class = "modal-img" src="${ post.image_url }" alt="${ post.alt_text }" />
             </div>
 
-    
-        </section>
+            <div class="post-info">
+            <div class="post-info-header">
+            <img src="${post.user.image_url}" alt="${post.user} profile picture" />
+            <h2>${post.user.username} </h2>
+            </div>
+            <div class="comments">
+
+                ${post.comments.map(comment2Html).join("\n")}
+            </div>
+            </div>
+            </div>
+           
+
+       
+    </section>
+        
 
     </div>`;
 };
@@ -96,13 +108,17 @@ const post2Modal = post => {
 comment2Html = comment => {
     return `
         <div class ="comment">
-            
+        <div>
+            <img src= "${comment.user.thumb_url}" />
+        </div>
+        <div>
             <strong> ${comment.user.username} </strong>
-            <p> ${comment.text} </p>
-            <p> ${comment.display_time} </p>
+            <p> ${comment.text} </p>   
+            <p class="comment-time"> ${comment.display_time} </p>
+        </div>
         </div>
     `
-}
+};
 
 const toggleFollow = event => {
     const elem = event.currentTarget;
@@ -133,6 +149,7 @@ const followUser = (userId, elem) => {
             console.log(data);
             elem.innerHTML = 'unfollow';
             elem.setAttribute('aria-checked', 'true');
+            elem.setAttribute('aria-label', 'Unfollow ${data.username}');
             elem.classList.add('unfollow');
             elem.classList.remove('follow');
             // in the event that we want to unfollow the user
@@ -151,6 +168,7 @@ const unfollowUser = (followingId, elem) => {
         console.log(data);
         elem.innerHTML = 'follow';
         elem.setAttribute('aria-checked', 'false');
+        elem.setAttribute('aria-label', 'Follow ${data.username}');
         elem.classList.add('follow');
         elem.classList.remove('unfollow');
         elem.removeAttribute('data-following-id');
@@ -281,18 +299,18 @@ const displayComments = post => {
     
     if (post.comments.length > 1) {
         return `
-        <button class="view-all blue ourButton" data-post-id=${post.id} onClick="showModal(event)"> View all ${post.comments.length} comments </button>
+        <button class="view-all blue ourButton" data-post-id=${post.id} aria-label="View all comments" onClick="showModal(event)"> View all ${post.comments.length} comments </button>
         <div class="card-comment">
-        <strong>${post.comments[0].user.username}</strong>
-        <p>${post.comments[0].text}</p>
+        <strong>${post.comments[post.comments.length-1].user.username}</strong>
+        <p>${post.comments[post.comments.length-1].text}</p>
         </div>
         `;
 
     } else if (post.comments.length === 1) {
         return `
         <div class="card-comment">
-        <strong>${post.comments[0].user.username}</strong>
-        <p>${post.comments[0].text}</p>
+        <strong>${post.comments[post.comments.length-1].user.username}</strong>
+        <p>${post.comments[post.comments.length-1].text}</p>
         </div>
         `;
 
@@ -301,44 +319,29 @@ const displayComments = post => {
     }
 };
 
-const postComment = event => {
-  const elem = event.currentTarget;
-
-  addComment(elem.dataset.postId, elem.dataset.comment, elem)
-
-//   if (elem.getAttribute('aria-checked') === 'false') {
-//     // Issue post request to UI/API endpoint to like a post
-//     likePost(elem.dataset.postId, elem);
-    
-// } else {
-//     // Issue delete request to UI/API endpoint to delete the like
-//     unlikePost(elem.dataset.postId, elem.dataset.likeId, elem);
-// }
-
-
-} 
-
 // ADDING A COMMENT [find variable comment]
-const addComment = (postId, comment, elem) => { 
-  const postData = {
-      "post_id": postId,
-      "text": comment
-  };
-  console.log(postData)
-  
-  fetch("/api/comments/", {
-          method: "POST",
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(postData)
-      })
-      .then(response => response.json())
-      .then(comment => {
-        // updatePost(comment.post_id, () )
-          const elem = document.querySelector(`#post-${postId}`)
-          elem.querySelector('.comment-textbox').focus();
-      });
+const addComment = event => { 
+    elem = event.currentTarget;
+
+    const postData = {
+        "post_id": elem.dataset.postId,
+        "text": document.getElementById(`input-comment-${elem.dataset.postId}`).value
+    };
+    console.log(postData)
+    
+    fetch("/api/comments/", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(postData)
+        })
+        .then(response => response.json())
+        .then(comment => {
+            updatePost(comment.post_id);
+            const elem = document.querySelector(`#post-${postId}`)
+            elem.querySelector('.comment-textbox').focus();
+        });
 };
 
 // RE-RENDER POST FUNCTION 
@@ -421,7 +424,7 @@ const closeModal = event => {
     console.log('close!');
     document.querySelector('.modal-bg').classList.add('hidden');
     document.querySelector('.modal-bg').setAttribute('aria-hidden', 'false');
-    document.querySelector('.open').focus();
+    document.querySelector('.view-all').focus();
 };
 
 const showModal = event => {
@@ -432,19 +435,11 @@ const showModal = event => {
         console.log("modal open")
         const html = post2Modal(post);
         document.querySelector(`#post-${post.id}`).insertAdjacentHTML('beforeend', html);
+        document.querySelector('#modal-container').innerHTML = html;
         document.querySelector('.modal-bg').classList.remove('hidden');
         document.querySelector('.modal-bg').setAttribute('aria-hidden', 'false');
-        document.body.style.overflowY = 'hidden';
-        // This is to ensure that the tabbing happens in the modal and loops back to the top of the modal
-        modalElement.addEventListener('focus', function(event) {
-            console.log('focus');
-            if (modalElement.getAttribute('aria-hidden') === 'false' && !modalElement.contains(event.target)) {
-                console.log('back to top!');
-                event.stopPropagation();
-                document.querySelector('.close').focus();
-            }
-        }, true);
-        
+        document.body.style.overflowY = 'hidden';  
+        document.querySelector('#close-btn').focus(); 
     });    
 };
 
