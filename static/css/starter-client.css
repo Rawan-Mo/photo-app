@@ -481,12 +481,6 @@ body * {
     font-size: 20px;
 }
 
-
-.modal-div {
-    /* display: grid; */
-    /* display: grid;
-    grid-template-columns: 2fr 1fr; */
-}
 /* COMMENTS */
 .comment img {
     border-radius: 50%;
@@ -533,7 +527,7 @@ body * {
 .post-info-header {
     position: sticky;
     top: 0px;
-    border-bottom: 1px solid gray;
+    border-bottom: 1px solid #D3D3D3;
     display: flex;
     z-index: 100;
     background-color: white;
