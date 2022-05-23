@@ -80,7 +80,7 @@ const post2Modal = post => {
                 <i class="fas fa-times close-btn"></i>
             </button>
            <div class="modal-div"
-           <div>
+           <divc>
             <img class = "modal-img" src="${ post.image_url }" alt="${ post.alt_text }" />
             </div>
 

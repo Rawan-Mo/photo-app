@@ -408,7 +408,8 @@ body * {
 }
 
 .modal {
-    width: 83vw;
+    /* width: 83vw; */
+    width: 70%;
     height: auto;
     max-height: 80vh;
     background-color: white;
@@ -418,8 +419,8 @@ body * {
     /* padding: 20px; */
 
     /* display: grid;
-    grid-template-columns: 2fr 1fr;
-    overflow: auto; */
+    grid-template-columns: 2fr 1fr;  */
+   
 }
 
 .close {
@@ -513,9 +514,14 @@ body * {
     height: 100%;
 }
 
+.modal-img-div {
+    width: 60%;
+}
+
 .post-info {
     overflow: auto;
     width: 40%;
+    
     /* padding-left: 10px; */
    
 }
@@ -547,6 +553,7 @@ body * {
     z-index: 5;
     margin-top: 15px;
     padding-bottom: 5px;
+    margin-right: 10px;
 }
 
 /* .comment-time {
