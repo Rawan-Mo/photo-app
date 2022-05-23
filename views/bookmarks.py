@@ -17,7 +17,8 @@ class BookmarksListEndpoint(Resource):
         # get all bookmarks owned by the current user
         bookmarks = Bookmark.query.filter(Bookmark.user_id==self.current_user.id).all()
         return Response(json.dumps([bookmark.to_dict() for bookmark in bookmarks]), mimetype="application/json", status=200)
-
+    
+    # @flask_jwt_extended.jwt_required() 
     def post(self):
         # create a new "bookmark" based on the data posted in the body 
         body = request.get_json()

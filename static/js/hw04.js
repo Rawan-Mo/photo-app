@@ -241,6 +241,7 @@ const bookmarkPost = (postId, elem) => {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
+                // 'X-CSRF-TOKEN': getCookie(csrf_access_token)
             },
             body: JSON.stringify(postData)
         })
@@ -447,6 +448,10 @@ const displayPosts = () => {
             document.querySelector('#posts').innerHTML = html;
         })
 };
+
+
+const getCookie 
+
 
 
 const initPage = () => {

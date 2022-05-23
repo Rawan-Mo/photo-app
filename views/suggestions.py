@@ -11,6 +11,7 @@ class SuggestionsListEndpoint(Resource):
     def __init__(self, current_user):
         self.current_user = current_user
     
+    # @flask_jwt_extended.jwt_required() 
     def get(self):
         # suggestions should be any user with an ID that's not in this list:
         # print(get_authorized_user_ids(self.current_user))

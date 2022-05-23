@@ -9,6 +9,7 @@ import os
 from models import db, User, ApiNavigator
 from views import initialize_routes
 import decorators
+# from datetime import datetime
 
 app = Flask(__name__)
 cors = CORS(app, 
@@ -22,6 +23,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["JWT_SECRET_KEY"] = os.environ.get('JWT_SECRET')
 app.config["JWT_TOKEN_LOCATION"] = ["headers", "cookies"]
 app.config["JWT_COOKIE_SECURE"] = False
+# app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(minutes=15)
 
 # https://github.com/vimalloc/flask-jwt-extended/issues/308
 app.config['PROPAGATE_EXCEPTIONS'] = True 
@@ -32,8 +34,8 @@ db.init_app(app)
 api = Api(app)
 
 # TODO: Deprecate old code for hard-coding the logged in user (User #12).
-# with app.app_context():
-#     app.current_user = User.query.filter_by(id=12).one()
+with app.app_context():
+    app.current_user = User.query.filter_by(id=12).one()
 
 # # TODO: replace the hard-coded user #12 code (above) with this code, which
 # # figures out who is logged into the system based on the JWT.
@@ -51,7 +53,7 @@ initialize_routes(api)
 
 # Server-side template for the homepage:
 @app.route('/')
-#@decorators.jwt_or_login
+@decorators.jwt_or_login
 def home():
     return render_template(
         'starter-client.html', 
@@ -60,7 +62,7 @@ def home():
 
 @app.route('/api')
 @app.route('/api/')
-#@decorators.jwt_or_login
+@decorators.jwt_or_login
 def api_docs():
     access_token = request.cookies.get('access_token_cookie')
     csrf = request.cookies.get('csrf_access_token')
