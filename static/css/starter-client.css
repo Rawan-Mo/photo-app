@@ -171,7 +171,7 @@ main {
     margin: 8px 0px 3px 0px;
     font-size: 0.9em;
 }
-.card .timestamp {
+.timestamp {
     color: #999;
     text-transform: uppercase;
     font-size: 0.70em !important;
@@ -355,7 +355,9 @@ aside header div{
     display: flex;
     justify-content: space-between;
   }
-.card-comment-posting {
+  
+  
+  .card-comment-posting {
     display: flex;
     align-items: center;
     display: flex;
@@ -448,7 +450,7 @@ body * {
     align-content: flex-start;
     padding: 10px;
     align-items: center;
-    border-bottom: solid 1px #CCC;
+    border-bottom: solid 1px #A0A0A0;
 }
 
 .close-btn:hover {
@@ -514,8 +516,12 @@ body * {
 .post-info {
     overflow: auto;
     width: 40%;
-    padding-left: 10px;
+    /* padding-left: 10px; */
    
+}
+
+.post-info img {
+    margin-left: 15px;
 }
 
 .post-info-header {
@@ -534,6 +540,7 @@ body * {
     width: 50px;
     height: 50px;
     margin-right: 5px;
+    margin-left: 5px;
 }
 .comments {
     overflow: hidden;
@@ -542,10 +549,21 @@ body * {
     padding-bottom: 5px;
 }
 
-.comment-time {
+/* .comment-time {
     font-weight: bold;
-}
+} */
 
 .card-caption, .caption {
     display: inline;
+}
+
+
+.view-comments-button-div {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+}
+
+.card-comment {
+    margin-top: 10px;
 }

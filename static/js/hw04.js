@@ -47,17 +47,16 @@ const post2Html = post => {
                 <p>${ post.likes.length } ${post.likes.length > 1 ? `likes` : `like`} </p>
               </div>
               
-              <div class="card-comments comments">
-                <div class="card-caption caption">
-                  <strong>gibsonjack</strong>
-                  <p>${ post.caption }</p>
-                  <button class="card-caption-more blue ourButton">more</button>
-                </div>
+              <strong>${ post.user.username }</strong>
+              <span>${ post.caption }</span>
+
+              <div class="timestamp">
+              <p>${post.display_time}</p>
+            </div>
+             
                     ${ displayComments(post) }
                 </div>
-              <div class="timestamp">
-                <p>${post.display_time}</p>
-              </div>
+              
             </div>
             <div class="card-comment-posting add-comment">
               <div class="adding-comment" id="comment-textbox">
@@ -114,7 +113,8 @@ comment2Html = comment => {
         <div>
             <strong> ${comment.user.username} </strong>
             <p> ${comment.text} </p>   
-            <p class="comment-time"> ${comment.display_time} </p>
+            <p class="timestamp"> ${comment.display_time} </p>
+           
         </div>
         </div>
     `
@@ -302,7 +302,8 @@ const displayComments = post => {
         <button class="view-all blue ourButton" data-post-id=${post.id} aria-label="View all comments" onClick="showModal(event)"> View all ${post.comments.length} comments </button>
         <div class="card-comment">
         <strong>${post.comments[post.comments.length-1].user.username}</strong>
-        <p>${post.comments[post.comments.length-1].text}</p>
+        <span>${post.comments[post.comments.length-1].text}</span>
+        <p class="timestamp">${post.comments[post.comments.length-1].display_time}</p>
         </div>
         `;
 
@@ -310,7 +311,8 @@ const displayComments = post => {
         return `
         <div class="card-comment">
         <strong>${post.comments[post.comments.length-1].user.username}</strong>
-        <p>${post.comments[post.comments.length-1].text}</p>
+        <span>${post.comments[post.comments.length-1].text}</span>
+        <p class="timestamp">${post.comments[post.comments.length-1].display_time}</p>
         </div>
         `;
 
