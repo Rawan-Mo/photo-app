@@ -38,12 +38,12 @@ with app.app_context():
 # # TODO: replace the hard-coded user #12 code (above) with this code, which
 # # figures out who is logged into the system based on the JWT.
 # @jwt.user_lookup_loader
-# def user_lookup_callback(_jwt_header, jwt_data):
-#     # print('JWT data:', jwt_data)
-#     # https://flask-jwt-extended.readthedocs.io/en/stable/automatic_user_loading/
-#     user_id = jwt_data["sub"]
-#     print('user_id =', user_id)
-#     return User.query.filter_by(id=user_id).one_or_none()
+def user_lookup_callback(_jwt_header, jwt_data):
+    # print('JWT data:', jwt_data)
+    # https://flask-jwt-extended.readthedocs.io/en/stable/automatic_user_loading/
+    user_id = jwt_data["sub"]
+    print('user_id =', user_id)
+    return User.query.filter_by(id=user_id).one_or_none()
 
 
 # Initialize routes for all of your API endpoints:
@@ -51,7 +51,7 @@ initialize_routes(api)
 
 # Server-side template for the homepage:
 @app.route('/')
-#@decorators.jwt_or_login
+@decorators.jwt_or_login
 def home():
     return render_template(
         'starter-client.html', 
@@ -60,7 +60,7 @@ def home():
 
 @app.route('/api')
 @app.route('/api/')
-#@decorators.jwt_or_login
+@decorators.jwt_or_login
 def api_docs():
     access_token = request.cookies.get('access_token_cookie')
     csrf = request.cookies.get('csrf_access_token')
