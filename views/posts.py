@@ -3,6 +3,7 @@ from flask_restful import Resource
 from models import Post, db, Following
 from views import get_authorized_user_ids
 from flask_jwt_extended import current_user 
+from flask_jwt_extended import jwt_required
 
 
 import json
