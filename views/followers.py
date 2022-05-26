@@ -3,8 +3,7 @@ from flask_restful import Resource
 from models import Following, db
 import json
 from views import get_authorized_user_ids
-from flask_jwt_extended import current_user 
-
+import flask_jwt_extended
 
 
 def get_path():
@@ -14,6 +13,7 @@ class FollowerListEndpoint(Resource):
     def __init__(self, current_user):
         self.current_user = current_user
     
+    @flask_jwt_extended.jwt_required()
     def get(self):
         user_ids = get_authorized_user_ids(self.current_user)
         '''
@@ -34,5 +34,5 @@ def initialize_routes(api):
         FollowerListEndpoint, 
         '/api/followers', 
         '/api/followers/', 
-        resource_class_kwargs={'current_user': current_user}
+        resource_class_kwargs={'current_user': flask_jwt_extended.current_user}
     )
