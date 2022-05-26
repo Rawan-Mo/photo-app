@@ -9,7 +9,7 @@ import os
 from models import db, User, ApiNavigator
 from views import initialize_routes
 import decorators
-# from datetime import datetime
+import datetime
 
 app = Flask(__name__)
 cors = CORS(app, 
@@ -23,7 +23,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["JWT_SECRET_KEY"] = os.environ.get('JWT_SECRET')
 app.config["JWT_TOKEN_LOCATION"] = ["headers", "cookies"]
 app.config["JWT_COOKIE_SECURE"] = False
-# app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(minutes=15)
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(minutes=30)
 
 # https://github.com/vimalloc/flask-jwt-extended/issues/308
 app.config['PROPAGATE_EXCEPTIONS'] = True 

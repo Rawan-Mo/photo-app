@@ -15,7 +15,7 @@ class PostListEndpoint(Resource):
     def __init__(self, current_user):
         self.current_user = current_user
 
-
+    @flask_jwt_extended.jwt_required()
     def get(self):  #HTTP GET
         args = request.args 
         print(args)
@@ -56,7 +56,8 @@ class PostListEndpoint(Resource):
         posts = Post.query.filter(Post.user_id.in_(user_ids)).limit(limit).all()
         data = [post.to_dict(user=self.current_user) for post in posts]
         return Response(json.dumps(data), mimetype="application/json", status=200)
-
+    
+    @flask_jwt_extended.jwt_required()
     def post(self):   #HTTP POST
         # create a new post based on the data posted in the body 
         body = request.get_json()
@@ -79,7 +80,7 @@ class PostDetailEndpoint(Resource):
     def __init__(self, current_user):
         self.current_user = current_user
         
-
+    @flask_jwt_extended.jwt_required()
     def patch(self, id):
         # update post based on the data posted in the body 
         body = request.get_json()
@@ -105,7 +106,7 @@ class PostDetailEndpoint(Resource):
         db.session.commit()
         return Response(json.dumps(post.to_dict()), mimetype="application/json", status=200)
 
-
+    @flask_jwt_extended.jwt_required()
     def delete(self, id):
         post = Post.query.get(id)
         if not post:
@@ -121,7 +122,7 @@ class PostDetailEndpoint(Resource):
 
         return Response(json.dumps({"message": "Post id={0} was successfully deleted.".format(id)}), mimetype="application/json", status=200)
 
-
+    @flask_jwt_extended.jwt_required()
     def get(self, id):
         # we need to query the posts table to get the post with the id
         post = Post.query.get(id)
