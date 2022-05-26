@@ -450,8 +450,6 @@ const displayPosts = () => {
 };
 
 
-const getCookie 
-
 
 
 const initPage = () => {

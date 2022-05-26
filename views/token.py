@@ -4,8 +4,6 @@ from flask import Response, request
 from flask_restful import Resource
 import json
 from datetime import timezone, datetime, timedelta
-from flask_jwt_extended import current_user 
-
 
 class AccessTokenEndpoint(Resource):
 
