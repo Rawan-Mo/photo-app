@@ -52,32 +52,3 @@ class Suggestions extends React.Component {
 }
 
 export default Suggestions;
-
-
-// {this.state.stories.map(
-//     story => <div className='story'> 
-//                 <img className='pic' src={story.user.thumb_url}/>
-//                 <p>{story.user.username}</p>
-//             </div>
-
-{/* <p className="suggestion-text">Suggestions for you</p>
-                <div>
-                    Suggestions
-                    {/* Suggestions */}
-                // </div> */}
-
-
-
-{/* <div className="suggestions">
-
-
-
-{this.state.users.map(
-    user => 
-        <div className='suggestion'>
-            <img className='pic' src={user.thumb_url}/>
-            <p className='suggestion-text'>{user.username}</p>
-
-        </div>                        
-        )}
-</div>                */}

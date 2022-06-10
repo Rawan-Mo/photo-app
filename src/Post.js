@@ -10,11 +10,11 @@ class Post extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            post: props.model
+            post: null
         }
 
-        //this.requeryPost = this.requeryPost.bind(this);
-        this.refreshPostDataFromServer = this.refreshPostDataFromServer.bind(this);
+        this.requeryPost = this.requeryPost.bind(this);
+        // this.refreshPostDataFromServer = this.refreshPostDataFromServer.bind(this);
     }
 
     componentDidMount() {
@@ -22,7 +22,7 @@ class Post extends React.Component {
         this.setState({ post: this.props.model });
     }
 
-    refreshPostDataFromServer() {
+    requeryPost() {
         // ref-fetch the post
         console.log('am I invoked')
         const url = `/api/posts/${this.state.post.id}`;
@@ -61,15 +61,18 @@ class Post extends React.Component {
                 
                 <div className="info">
                     <div>
+                        <div className='buttons'>
                         <LikeButton 
                             postId={post.id} 
                             likeId={post.current_user_like_id}
-                            refreshPost={this.refreshPostDataFromServer} />
+                            refreshPost={this.requeryPost} />
 
                         <BookmarkButton 
                             postId={post.id} 
                             bookmarkId={post.current_user_bookmark_id}
-                            refreshPost={this.refreshPostDataFromServer} />
+                            refreshPost={this.requeryPost} />
+
+                        </div> 
 
                         
                         
@@ -87,7 +90,7 @@ class Post extends React.Component {
                     />
                     <AddComment
                         postId={post.id} 
-                        refreshPost={this.refreshPostDataFromServer}
+                        refreshPost={this.requeryPost}
                     />
                 </div>
             </section> 

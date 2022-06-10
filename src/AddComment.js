@@ -22,8 +22,8 @@ class AddComment extends React.Component {
         ev.preventDefault();
         const url ='/api/comments/';
         const postData = {
-            post_id: this.props.postId,
-            comment: this.comment.value
+            post_id: this.state.postId,
+            comment: this.state.value
         }
         fetch(url, {
             headers: getHeaders(),
@@ -35,7 +35,7 @@ class AddComment extends React.Component {
                 console.log(data);
                 //this is caling the parent's method
                 this.setState ({
-                    value: ev.target.value
+                    value: data
                 })
                 this.props.refreshPost();
 
@@ -56,7 +56,7 @@ class AddComment extends React.Component {
                             type='text' 
                             placeholder="Add a comment..." 
                             ref={(input) => this.comment = input} 
-                            value={this.state.value}
+                            // value={this.state.value}
                         />
                     </div>
                         <button className='link' type='submit' onClick={this.addCommentButton}>Post</button>
@@ -65,24 +65,6 @@ class AddComment extends React.Component {
             </div>
 
         )
-        // form class add-comment
-        // div class input holder
-        // <input class="comment-textbox" aria-label="Add a comment" placeholder="Add a comment..." value="">
-        // /div
-        // button class link Post
-        // /form
-
-        // const likeId = this.props.likeId;
-        // const heartClass = (likeId ? 'fas' : 'far') + ' fa-heart';
-        // return (
-        //     <button role="switch"
-        //         className="like" 
-        //         aria-label="Like Button" 
-        //         aria-checked={likeId ? true : false}
-        //         onClick={this.toggleLike}>
-        //         <i className={heartClass}></i>                        
-        //     </button>
-        // ) 
     }
 }
 

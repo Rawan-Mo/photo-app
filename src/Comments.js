@@ -35,18 +35,6 @@ class Comments extends React.Component {
     }
     
             </div>
-            // <div>
-            //   if {comments.length > 1 } {
-            //       <strong>{comments[comments.length-1].user.username}</strong>
-            //   }
-            //   if {comments.length === 1 } {
-            //         <strong>{comments[0].user.username}</strong>
-            //   }
-
-            //   {/* <p>{comments[0].user.username}</p>
-            //   <p>this is a comment</p> */}
-             
-            // </div>
         );
      }
 }
