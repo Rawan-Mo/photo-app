@@ -19,12 +19,13 @@ class Post extends React.Component {
 
     componentDidMount() {
         // fetch posts and then set the state...
+        this.setState({ post: this.props.model });
     }
 
     refreshPostDataFromServer() {
         // ref-fetch the post
         console.log('am I invoked')
-        const url = '/api/posts' + this.state.post.id;
+        const url = `/api/posts/${this.state.post.id}`;
         fetch(url, { 
                 headers: getHeaders()
             })
@@ -82,8 +83,7 @@ class Post extends React.Component {
                     </div>
                     
                     <Comments
-                        post={post}
-                        postId={post.id}
+                        comments={post.comments}
                     />
                     <AddComment
                         postId={post.id} 
