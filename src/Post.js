@@ -73,7 +73,8 @@ class Post extends React.Component {
                             refreshPost={this.requeryPost} />
 
                         </div> 
-
+                        <strong className='likes'>{ post.likes.length } {post.likes.length > 1 ? `likes` : `like`}</strong>
+                        <br></br>
                         
                         
         
