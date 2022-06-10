@@ -13,9 +13,10 @@ class Profile extends React.Component {
 
     render () { // This is what will draw componenets to the screen
         return (
-            <header>
-                Profile
-                {/* Navigation Links */}
+            <header className='profile'>
+                 {/* <h1>{this.props.title}</h1> */}
+                 <img className='pic' src={this.props.pic} alt="profile pic" />
+                <h2> {this.props.username} </h2>
             </header>
         );
      }

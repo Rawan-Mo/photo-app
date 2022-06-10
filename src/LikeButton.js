@@ -10,6 +10,10 @@ class LikeButton extends React.Component {
         this.removeLike = this.removeLike.bind(this);
     }
 
+    componentDidMount() {
+        // fetch posts and then set the state...
+    }
+
     toggleLike(ev) {
         if (this.props.likeId) {
             this.removeLike();

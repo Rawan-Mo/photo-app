@@ -15,7 +15,11 @@ class NavBar extends React.Component {
         return (
             <nav className="main-nav">
                 <h1>{this.props.title}</h1>
+                <div className="nav-links">
+                <button className='link'>Api docs</button>
                 {this.props.username}
+                <button className='link'>Sign out</button>
+                </div>
             </nav>
         );
      }

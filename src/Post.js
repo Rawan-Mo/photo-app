@@ -2,6 +2,7 @@ import React from 'react';
 import LikeButton from './LikeButton';
 import BookmarkButton from './BookmarkButton';
 import AddComment from './AddComment';
+import Comments from './Comments';
 import {getHeaders} from './utils';
 
 class Post extends React.Component {  
@@ -73,8 +74,21 @@ class Post extends React.Component {
                         
         
                     </div>
-                    <p>{ post.caption }</p>
-                    <AddComment/>
+                    <div className='caption'>
+                        <strong>{post.user.username}</strong>
+                        <span>{ post.caption }</span>
+
+                        <p className='timestamp'>{post.display_time}</p>
+                    </div>
+                    
+                    <Comments
+                        post={post}
+                        postId={post.id}
+                    />
+                    <AddComment
+                        postId={post.id} 
+                        refreshPost={this.refreshPostDataFromServer}
+                    />
                 </div>
             </section> 
         );     

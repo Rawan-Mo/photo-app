@@ -10,6 +10,10 @@ class BookmarkButton extends React.Component {
         this.removeBookmark = this.removeBookmark.bind(this);
     }
 
+    componentDidMount() {
+        // fetch posts and then set the state...
+    }
+
     toggleBookmark(ev) {
         if (this.props.bookmarkId) {
             console.log('unBookmark');

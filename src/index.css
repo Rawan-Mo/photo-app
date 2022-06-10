@@ -388,3 +388,8 @@ button.like, button.bookmark {
         display: none;
     }
 }
+
+
+.profile {
+    display: flex;
+}

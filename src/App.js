@@ -36,7 +36,10 @@ class App extends React.Component {
                 username= {this.state.user.username}/>
 
             <aside>
-                <Profile />
+                <Profile 
+                    pic = {this.state.user.thumb_url}
+                    username= {this.state.user.username}
+                />
                 <Suggestions />
             </aside>
 
