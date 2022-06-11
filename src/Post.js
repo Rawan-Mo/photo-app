@@ -88,6 +88,7 @@ class Post extends React.Component {
                     
                     <Comments
                         comments={post.comments}
+                        refreshPost={this.requeryPost}
                     />
                     <AddComment
                         postId={post.id} 

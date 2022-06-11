@@ -18,8 +18,15 @@ class Comments extends React.Component {
         return comment;
     }
 
+    findLastComment() {
+        const comment = this.props.comments[0];
+        return comment;
+    }
+
     render () { // This is what will draw componenets to the screen
-        const comment = this.lastComment();
+        // const comment = this.lastComment();
+        const comment = this.findLastComment();
+        
         return (
             <div className='comments'>
             {comment ? 
@@ -30,9 +37,14 @@ class Comments extends React.Component {
                 <span>{comment.text}</span>
                 <p className='timestamp'>{comment.display_time}</p>
                 </div>
+
+                    
             :
             ''
-    }
+            }
+            
+
+
     
             </div>
         );
