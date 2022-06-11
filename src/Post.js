@@ -92,7 +92,7 @@ class Post extends React.Component {
                     />
                     <AddComment
                         postId={post.id} 
-                        refreshPost={this.requeryPost}
+                        callback={this.requeryPost}
                     />
                 </div>
             </section> 
