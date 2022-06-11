@@ -29,15 +29,16 @@ class AddComment extends React.Component {
     }
 
     handleSubmit(ev) {
+        console.log('add')
         ev.preventDefault();
         const postData = {
             "post_id": this.props.postId,
             "text": this.state.value
         }
 
-        fetch('/api/comments', {
-            method: "POST",
+        fetch("/api/comments/", {
             header: getHeaders(),
+            method: 'POST',
             body: JSON.stringify(postData)
         })
         .then(response => response.json())
@@ -63,9 +64,9 @@ render () {
                             aria-label="Add a comment" 
                             type='text' 
                             placeholder="Add a comment..." 
-                            onChange={this.handleChange}
-                            value={this.state.value}
                             ref={this.commentInputRef}
+                            value={this.state.value}
+                            onChange={this.handleChange}
                             
                         />
                     </div>
